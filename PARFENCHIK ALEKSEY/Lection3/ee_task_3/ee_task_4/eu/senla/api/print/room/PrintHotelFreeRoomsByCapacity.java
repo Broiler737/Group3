@@ -1,7 +1,7 @@
 package eu.senla.api.print.room;
 
-import eu.senla.hotel.Hotel;
-import eu.senla.room.Room;
+import eu.senla.model.hotel.Hotel;
+import eu.senla.model.room.Room;
 import eu.senla.utils.comparator.room.ComparatorRoomByCapacityAscending;
 import eu.senla.utils.comparator.room.ComparatorRoomByCapacityDescending;
 import java.util.Arrays;
@@ -9,9 +9,9 @@ import java.util.Arrays;
 public class PrintHotelFreeRoomsByCapacity {
 
   public void printHotelFreeRoomsByCapacityAscending(Hotel hotelInformationToPrint) {
-    Room[] tempHotelRoom = new Room[hotelInformationToPrint.hotelRooms.getHotelRoom().size()];
-    for (int i = 0; i < hotelInformationToPrint.hotelRooms.getHotelRoom().size(); i++) {
-      tempHotelRoom[i] = hotelInformationToPrint.hotelRooms.getHotelRoom().get(i);
+    Room[] tempHotelRoom = new Room[hotelInformationToPrint.roomsDao.getRoomsList().size()];
+    for (int i = 0; i < hotelInformationToPrint.roomsDao.getRoomsList().size(); i++) {
+      tempHotelRoom[i] = hotelInformationToPrint.roomsDao.getRoomsList().get(i);
     }
     Arrays.sort(tempHotelRoom, 0, tempHotelRoom.length, new ComparatorRoomByCapacityAscending());
     for (Room roomToPrint : tempHotelRoom
@@ -24,9 +24,9 @@ public class PrintHotelFreeRoomsByCapacity {
   }
 
   public void printHotelFreeRoomsByCapacityDescending(Hotel hotelInformationToPrint) {
-    Room[] tempHotelRoom = new Room[hotelInformationToPrint.hotelRooms.getHotelRoom().size()];
-    for (int i = 0; i < hotelInformationToPrint.hotelRooms.getHotelRoom().size(); i++) {
-      tempHotelRoom[i] = hotelInformationToPrint.hotelRooms.getHotelRoom().get(i);
+    Room[] tempHotelRoom = new Room[hotelInformationToPrint.roomsDao.getRoomsList().size()];
+    for (int i = 0; i < hotelInformationToPrint.roomsDao.getRoomsList().size(); i++) {
+      tempHotelRoom[i] = hotelInformationToPrint.roomsDao.getRoomsList().get(i);
     }
     Arrays.sort(tempHotelRoom, 0, tempHotelRoom.length, new ComparatorRoomByCapacityDescending());
     for (Room roomToPrint : tempHotelRoom

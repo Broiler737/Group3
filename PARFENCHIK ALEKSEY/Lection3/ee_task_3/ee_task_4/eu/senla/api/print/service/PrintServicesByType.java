@@ -1,17 +1,15 @@
 package eu.senla.api.print.service;
 
-import eu.senla.hotel.Hotel;
-import eu.senla.service.Service;
-import eu.senla.service.Services;
+import eu.senla.model.hotel.Hotel;
+import eu.senla.model.service.Service;
 import eu.senla.utils.comparator.service.ComparatorServiceByTypeAscending;
 import java.util.Arrays;
 
 public class PrintServicesByType {
 
-  public void printServicesByTypeAscending(Hotel hotelInformationToPrint,
-      Services services) {
-    services.prepareCurrentServices(services.getServices());
-    Service[] tempServiceArray = services.prepareCurrentServices(services.getServices());
+  public void printServicesByTypeAscending(Hotel hotelInformationToPrint) {
+    hotelInformationToPrint.getProcessingServices().prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
+    Service[] tempServiceArray = hotelInformationToPrint.getProcessingServices().prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByTypeAscending());
     for (Service sortedService : tempServiceArray) {
@@ -21,10 +19,9 @@ public class PrintServicesByType {
     }
   }
 
-  public void printServicesByTypeDescending(Hotel hotelInformationToPrint,
-      Services services) {
-    services.prepareCurrentServices(services.getServices());
-    Service[] tempServiceArray = services.prepareCurrentServices(services.getServices());
+  public void printServicesByTypeDescending(Hotel hotelInformationToPrint) {
+    hotelInformationToPrint.getProcessingServices().prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
+    Service[] tempServiceArray = hotelInformationToPrint.getProcessingServices().prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
     Service[] tempServiceReverseArray = new Service[tempServiceArray.length];
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByTypeAscending());

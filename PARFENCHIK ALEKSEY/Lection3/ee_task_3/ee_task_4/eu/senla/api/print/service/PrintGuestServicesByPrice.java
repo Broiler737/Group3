@@ -1,8 +1,8 @@
 package eu.senla.api.print.service;
 
-import eu.senla.guest.Guest;
-import eu.senla.guest.OrderedService;
-import eu.senla.hotel.Hotel;
+import eu.senla.model.guest.Guest;
+import eu.senla.model.guest.OrderedService;
+import eu.senla.model.hotel.Hotel;
 import eu.senla.utils.comparator.service.ComparatorOrderedServiceByPriceAscending;
 import eu.senla.utils.comparator.service.ComparatorOrderedServiceByPriceDescending;
 import java.util.Arrays;
@@ -78,7 +78,7 @@ public class PrintGuestServicesByPrice {
 
   public void printGuestByNameServicesByPriceAscending(Hotel hotelInformationToPrint,
       String guestName) {
-    Guest tempGuest = hotelInformationToPrint.getGuestInRoom(hotelInformationToPrint, guestName);
+    Guest tempGuest = hotelInformationToPrint.getProcessingGuests().selectGuestByName(hotelInformationToPrint, guestName);
     OrderedService[] tempServicesArrayToPrint = tempGuest.getOrderedServices().toArray(
         new OrderedService[]{});
     Arrays.sort(tempServicesArrayToPrint, 0, tempServicesArrayToPrint.length,
@@ -111,7 +111,7 @@ public class PrintGuestServicesByPrice {
 
   public void printGuestByNameServicesByPriceDescending(Hotel hotelInformationToPrint,
       String guestName) {
-    Guest tempGuest = hotelInformationToPrint.getGuestInRoom(hotelInformationToPrint, guestName);
+    Guest tempGuest = hotelInformationToPrint.getProcessingGuests().selectGuestByName(hotelInformationToPrint, guestName);
     OrderedService[] tempServicesArrayToPrint = tempGuest.getOrderedServices().toArray(
         new OrderedService[]{});
     Arrays.sort(tempServicesArrayToPrint, 0, tempServicesArrayToPrint.length,

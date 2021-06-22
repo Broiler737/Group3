@@ -1,6 +1,6 @@
 package eu.senla.utils.comparator.guest;
 
-import eu.senla.guest.GuestsAndRooms;
+import eu.senla.model.guest.GuestsAndRooms;
 import java.util.Comparator;
 
 public class ComparatorGuestByDateCheckOutDateDescending implements Comparator<GuestsAndRooms> {

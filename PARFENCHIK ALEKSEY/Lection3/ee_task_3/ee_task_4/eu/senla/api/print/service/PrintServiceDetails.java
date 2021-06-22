@@ -1,6 +1,6 @@
 package eu.senla.api.print.service;
 
-import eu.senla.service.Service;
+import eu.senla.model.service.Service;
 
 public class PrintServiceDetails {
 

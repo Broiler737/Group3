@@ -1,6 +1,6 @@
 package eu.senla.utils.comparator.service;
 
-import eu.senla.service.Service;
+import eu.senla.model.service.Service;
 import java.util.Comparator;
 
 public class ComparatorServiceByPriceAscending implements Comparator<Service> {

@@ -1,7 +1,7 @@
 package eu.senla.api.print.guest;
 
-import eu.senla.guest.GuestsAndRooms;
-import eu.senla.hotel.Hotel;
+import eu.senla.model.guest.GuestsAndRooms;
+import eu.senla.model.hotel.Hotel;
 import eu.senla.utils.comparator.guest.ComparatorGuestByNameAscending;
 import java.util.Arrays;
 
@@ -14,7 +14,7 @@ public class PrintGuestsByName {
     Arrays.sort(tempGuestsAndRoomsArray, 0, tempGuestsAndRoomsArray.length,
         new ComparatorGuestByNameAscending());
     for (GuestsAndRooms guestsAndRooms : tempGuestsAndRoomsArray) {
-      System.out.println(guestsAndRooms.getRoomNumber());
+      System.out.println("Room #"+guestsAndRooms.getRoomNumber());
       hotelInformationToPrint.printInformation.getPrintGuestCard()
           .printGuestCard(hotelInformationToPrint, guestsAndRooms.getGuest());
     }
@@ -32,7 +32,7 @@ public class PrintGuestsByName {
           - i];
     }
     for (GuestsAndRooms guestsAndRooms : tempGuestsAndRoomsReverseArray) {
-      System.out.println(guestsAndRooms.getRoomNumber());
+      System.out.println("Room #"+guestsAndRooms.getRoomNumber());
       hotelInformationToPrint.printInformation.getPrintGuestCard()
           .printGuestCard(hotelInformationToPrint, guestsAndRooms.getGuest());
     }

@@ -1,17 +1,15 @@
 package eu.senla.api.print.service;
 
-import eu.senla.hotel.Hotel;
-import eu.senla.service.Service;
-import eu.senla.service.Services;
+import eu.senla.model.hotel.Hotel;
+import eu.senla.model.service.Service;
 import eu.senla.utils.comparator.service.ComparatorServiceByNameAscending;
 import java.util.Arrays;
 
 public class PrintServicesByName {
 
-  public void printServicesByNameAscending(Hotel hotelInformationToPrint,
-      Services services) {
-    services.prepareCurrentServices(services.getServices());
-    Service[] tempServiceArray = services.prepareCurrentServices(services.getServices());
+  public void printServicesByNameAscending(Hotel hotelInformationToPrint) {
+    hotelInformationToPrint.getProcessingServices().prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
+    Service[] tempServiceArray = hotelInformationToPrint.getProcessingServices().prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByNameAscending());
     for (Service sortedService : tempServiceArray) {
@@ -21,9 +19,8 @@ public class PrintServicesByName {
     }
   }
 
-  public void printServicesByNameDescending(Hotel hotelInformationToPrint,
-      Services services) {
-    Service[] tempServiceArray = services.prepareCurrentServices(services.getServices());
+  public void printServicesByNameDescending(Hotel hotelInformationToPrint) {
+    Service[] tempServiceArray = hotelInformationToPrint.getProcessingServices().prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByNameAscending());
     for (int i = 0; i < tempServiceArray.length; i++) {

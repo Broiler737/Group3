@@ -1,10 +1,6 @@
 package eu.senla.api.print;
 
-import eu.senla.api.print.guest.PrintAllHotelGuestsByRoomNumber;
-import eu.senla.api.print.guest.PrintGuestCard;
-import eu.senla.api.print.guest.PrintGuestsByCheckOutDate;
-import eu.senla.api.print.guest.PrintGuestsByName;
-import eu.senla.api.print.guest.PrintRoomArchivedGuests;
+import eu.senla.api.print.guest.*;
 import eu.senla.api.print.hotel.PrintCountOfFreeRoomsInHotel;
 import eu.senla.api.print.hotel.PrintCountOfHotelGuests;
 import eu.senla.api.print.hotel.PrintListOfFreeInFutureRoomsInHotel;
@@ -21,7 +17,7 @@ import eu.senla.api.print.service.PrintServiceDetails;
 import eu.senla.api.print.service.PrintServicesByName;
 import eu.senla.api.print.service.PrintServicesByPrice;
 import eu.senla.api.print.service.PrintServicesByType;
-import eu.senla.hotel.Hotel;
+import eu.senla.model.hotel.Hotel;
 import java.time.LocalDate;
 
 public class PrintInformation {
@@ -47,7 +43,7 @@ public class PrintInformation {
   protected final PrintListOfFreeInFutureRoomsInHotel printListOfFreeInFutureRoomsInHotel = new PrintListOfFreeInFutureRoomsInHotel();
   protected final PrintGuestServicesByName printGuestServicesByName = new PrintGuestServicesByName();
   protected final PrintGuestServicesByPrice printGuestServicesByPrice = new PrintGuestServicesByPrice();
-
+protected final PrintGuestServices printGuestServices = new PrintGuestServices();
   public PrintInformation() {
   }
 
@@ -105,59 +101,48 @@ public class PrintInformation {
     System.out.println("PrintListOfFreeInFutureRoomsInHotel");
     printListOfFreeInFutureRoomsInHotel
         .printListOfFreeInFutureRoomsInHotel(hotelInformationToPrint, LocalDate.of(2021,
-            6, 19));
+            7, 19));
     System.out.println();
     System.out.println("printGuestCard and debt");
     printGuestCard.printGuestCard(hotelInformationToPrint,
-        hotelInformationToPrint.getGuestInRoom(hotelInformationToPrint, "Mike"));
+        hotelInformationToPrint.getProcessingGuests().selectGuestByName(hotelInformationToPrint, "Mike"));
     System.out.println();
     System.out.println("printGuestServicesByNameAscending");
     printGuestServicesByName
-        .printGuestByNameServicesByNameAscending(hotelInformationToPrint, "Margaret");
-    System.out.println();
-    printGuestServicesByName
-        .printGuestServicesByNameAscending(hotelInformationToPrint,
-            hotelInformationToPrint.hotelGuest.getHotelGuests().get(4).getRegisteredInRoomGuests()
-                .get(1));
-    System.out.println();
-    printGuestServicesByName
-        .printGuestByNameServicesByNameDescending(hotelInformationToPrint, "Margaret");
-    System.out.println();
-    printGuestServicesByName
         .printGuestServicesByNameDescending(hotelInformationToPrint,
-            hotelInformationToPrint.hotelGuest.getHotelGuests().get(4).getRegisteredInRoomGuests()
-                .get(1));
+            hotelInformationToPrint.getProcessingGuests()
+                .selectGuestByName(hotelInformationToPrint, "Nick").hashCode());
     System.out.println();
     System.out.println("printGuestServicesByPriceAscending");
     printGuestServicesByPrice
         .printGuestByNameServicesByPriceAscending(hotelInformationToPrint, "Margaret");
     System.out.println();
     printGuestServicesByPrice.printGuestServicesByPriceAscending(hotelInformationToPrint,
-        hotelInformationToPrint.hotelGuest.getHotelGuests().get(4).getRegisteredInRoomGuests()
+        hotelInformationToPrint.guestDao.getGuestsList().get(4).getRegisteredInRoomGuests()
             .get(1));
     System.out.println();
     printGuestServicesByPrice
         .printGuestByNameServicesByPriceDescending(hotelInformationToPrint, "Margaret");
     System.out.println();
     printGuestServicesByPrice.printGuestServicesByPriceDescending(hotelInformationToPrint,
-        hotelInformationToPrint.hotelGuest.getHotelGuests().get(4).getRegisteredInRoomGuests()
+        hotelInformationToPrint.guestDao.getGuestsList().get(4).getRegisteredInRoomGuests()
             .get(1));
     printServicesByName
-        .printServicesByNameAscending(hotelInformationToPrint, hotelInformationToPrint.services);
+        .printServicesByNameAscending(hotelInformationToPrint);
     printServicesByName
-        .printServicesByNameDescending(hotelInformationToPrint, hotelInformationToPrint.services);
+        .printServicesByNameDescending(hotelInformationToPrint);
     System.out.println();
     printServicesByPrice
-        .printServicesByPriceAscending(hotelInformationToPrint, hotelInformationToPrint.services);
+        .printServicesByPriceAscending(hotelInformationToPrint);
     printServicesByPrice
-        .printServicesByPriceDescending(hotelInformationToPrint, hotelInformationToPrint.services);
+        .printServicesByPriceDescending(hotelInformationToPrint);
     System.out.println();
     printServicesByType
-        .printServicesByTypeAscending(hotelInformationToPrint, hotelInformationToPrint.services);
+        .printServicesByTypeAscending(hotelInformationToPrint);
     printServicesByType
-        .printServicesByTypeDescending(hotelInformationToPrint, hotelInformationToPrint.services);
+        .printServicesByTypeDescending(hotelInformationToPrint);
     printRoomDetails.printRoomDetails(hotelInformationToPrint,
-        hotelInformationToPrint.hotelRooms.findRoomByNumber(2));
+        hotelInformationToPrint.getProcessingRooms().findRoomByNumber(2));
   }
 
   public PrintServiceDetails getPrintServiceDetails() {
@@ -174,6 +159,74 @@ public class PrintInformation {
 
   public PrintRoomArchivedGuests getPrintRoomArchivedGuests() {
     return printRoomArchivedGuests;
+  }
+
+  public PrintGuestsByName getPrintGuestsByName() {
+    return printGuestsByName;
+  }
+
+  public PrintServicesByName getPrintServicesByName() {
+    return printServicesByName;
+  }
+
+  public PrintServicesByPrice getPrintServicesByPrice() {
+    return printServicesByPrice;
+  }
+
+  public PrintServicesByType getPrintServicesByType() {
+    return printServicesByType;
+  }
+
+  public PrintGuestsByCheckOutDate getPrintGuestsByCheckOutDate() {
+    return printGuestsByCheckOutDate;
+  }
+
+  public PrintHotelRoomsByPrice getPrintHotelRoomsByPrice() {
+    return printHotelRoomsByPrice;
+  }
+
+  public PrintHotelRoomsByCapacity getPrintHotelRoomsByCapacity() {
+    return printHotelRoomsByCapacity;
+  }
+
+  public PrintHotelRoomsByRating getPrintHotelRoomsByRating() {
+    return printHotelRoomsByRating;
+  }
+
+  public PrintHotelFreeRoomsByPrice getPrintHotelFreeRoomsByPrice() {
+    return printHotelFreeRoomsByPrice;
+  }
+
+  public PrintHotelFreeRoomsByCapacity getPrintHotelFreeRoomsByCapacity() {
+    return printHotelFreeRoomsByCapacity;
+  }
+
+  public PrintHotelFreeRoomsByRating getPrintHotelFreeRoomsByRating() {
+    return printHotelFreeRoomsByRating;
+  }
+
+  public PrintCountOfHotelGuests getPrintCountOfHotelGuests() {
+    return printCountOfHotelGuests;
+  }
+
+  public PrintCountOfFreeRoomsInHotel getPrintCountOfFreeRoomsInHotel() {
+    return printCountOfFreeRoomsInHotel;
+  }
+
+  public PrintListOfFreeInFutureRoomsInHotel getPrintListOfFreeInFutureRoomsInHotel() {
+    return printListOfFreeInFutureRoomsInHotel;
+  }
+
+  public PrintGuestServicesByName getPrintGuestServicesByName() {
+    return printGuestServicesByName;
+  }
+
+  public PrintGuestServicesByPrice getPrintGuestServicesByPrice() {
+    return printGuestServicesByPrice;
+  }
+
+  public PrintGuestServices getPrintGuestServices() {
+    return printGuestServices;
   }
 
   public PrintAllHotelGuestsByRoomNumber getPrintAllHotelGuestsByRoomNumber() {

@@ -1,7 +1,7 @@
 package eu.senla.api.print.guest;
 
-import eu.senla.guest.Guest;
-import eu.senla.hotel.Hotel;
+import eu.senla.model.guest.Guest;
+import eu.senla.model.hotel.Hotel;
 
 public class PrintGuestCard {
 
@@ -10,14 +10,14 @@ public class PrintGuestCard {
     if (!guest.getOrderedServices().isEmpty()) {
       System.out.println("Services ordered by guest:");
       System.out.println();
-      guest.printGuestServices(informationToProcessing);
+     informationToProcessing.getPrintInformation().getPrintGuestServices().printGuestServices(informationToProcessing,guest);
       System.out
-          .println("Guest's debt for services is " + guest.countDebtForServiceOfGuest() + "$");
+          .println("Guest's debt for services is " + informationToProcessing.getProcessingGuests().countDebtForServiceOfGuest(guest) + "$");
     } else {
       System.out.println("Guest haven't ordered any service");
     }
     System.out.println(
-        "Guest debt is " + (guest.getGuestDebt(informationToProcessing, guest.hashCode()))
+        "Guest debt is " + informationToProcessing.getProcessingGuests().countGuestDebt(informationToProcessing,guest,guest.hashCode())
             + "$ in this moment");
     System.out.println("********** ********** **********");
   }
@@ -27,7 +27,7 @@ public class PrintGuestCard {
     if (!guest.getOrderedServices().isEmpty()) {
       System.out.println("Services ordered by guest:");
       System.out.println();
-      guest.printGuestServices(informationToProcessing);
+      informationToProcessing.getPrintInformation().getPrintGuestServices().printGuestServices(informationToProcessing,guest);
       System.out.println(
           "Guest debt is " + (guest.getGuestDebt())
               + "$ in this moment");

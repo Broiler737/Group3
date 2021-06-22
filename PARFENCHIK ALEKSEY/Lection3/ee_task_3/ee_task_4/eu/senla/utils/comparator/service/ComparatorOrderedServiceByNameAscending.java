@@ -1,6 +1,6 @@
 package eu.senla.utils.comparator.service;
 
-import eu.senla.guest.OrderedService;
+import eu.senla.model.guest.OrderedService;
 import java.util.Comparator;
 
 public class ComparatorOrderedServiceByNameAscending implements Comparator<OrderedService> {

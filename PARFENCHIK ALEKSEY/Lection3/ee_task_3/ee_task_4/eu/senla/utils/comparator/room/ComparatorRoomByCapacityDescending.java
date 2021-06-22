@@ -1,6 +1,6 @@
 package eu.senla.utils.comparator.room;
 
-import eu.senla.room.Room;
+import eu.senla.model.room.Room;
 import java.util.Comparator;
 
 public class ComparatorRoomByCapacityDescending implements Comparator<Room> {

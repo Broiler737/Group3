@@ -1,27 +1,27 @@
 package eu.senla.dao;
 
-import eu.senla.guest.GuestsAndRooms;
-import eu.senla.hotel.Hotel;
+import eu.senla.model.guest.GuestsAndRooms;
+import eu.senla.model.hotel.Hotel;
 
 public class ProcessingGuestList {
 
   public GuestsAndRooms[] getGuestsAndRooms(Hotel informationToProcessing) {
-    GuestsAndRooms[] guestsAndRooms = new GuestsAndRooms[informationToProcessing.hotelGuest
+    GuestsAndRooms[] guestsAndRooms = new GuestsAndRooms[informationToProcessing.getProcessingGuests()
         .getCountOfRegisteredGuests(informationToProcessing)];
     int tempCounterOfGuests = 0;
-    for (int i = 0; i < informationToProcessing.hotelGuest.getHotelGuests().size(); i++) {
-      if (!informationToProcessing.hotelGuest.getHotelGuests().get(i).getRegisteredInRoomGuests()
+    for (int i = 0; i < informationToProcessing.guestDao.getGuestsList().size(); i++) {
+      if (!informationToProcessing.guestDao.getGuestsList().get(i).getRegisteredInRoomGuests()
           .isEmpty()) {
         for (int j = 0;
-            j < informationToProcessing.hotelGuest.getHotelGuests().get(i)
+            j < informationToProcessing.guestDao.getGuestsList().get(i)
                 .getRegisteredInRoomGuests().size();
             j++) {
-          if (informationToProcessing.getHotelGuest().getHotelGuests().get(i)
+          if (informationToProcessing.getGuestDao().getGuestsList().get(i)
               .getRegisteredInRoomGuests().get(j) != null) {
             guestsAndRooms[tempCounterOfGuests] = new GuestsAndRooms(
-                informationToProcessing.getHotelGuest().getHotelGuests().get(i)
+                informationToProcessing.getGuestDao().getGuestsList().get(i)
                     .getRegisteredInRoomGuests().get(j),
-                informationToProcessing.hotelGuest.getHotelGuests().get(i).getRoomNumber());
+                informationToProcessing.guestDao.getGuestsList().get(i).getRoomNumber());
             tempCounterOfGuests++;
           }
         }
