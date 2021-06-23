@@ -1,12 +1,12 @@
 package eu.senla.utils.comparator.guest;
 
-import eu.senla.model.guest.GuestsAndRooms;
+import eu.senla.model.guest.Guest;
 import java.util.Comparator;
 
-public class ComparatorGuestByNameAscending implements Comparator<GuestsAndRooms> {
+public class ComparatorGuestByNameAscending implements Comparator<Guest> {
 
   @Override
-  public int compare(GuestsAndRooms o1, GuestsAndRooms o2) {
-    return o1.getGuest().getGuestName().compareTo(o2.getGuest().getGuestName());
+  public int compare(Guest o1, Guest o2) {
+    return o1.getGuestName().compareTo(o2.getGuestName());
   }
 }

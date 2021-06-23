@@ -60,7 +60,7 @@ public class ProcessingServices {
     room.getRoomServices().putIfAbsent(serviceToAdd.getServiceId(), serviceToAdd);
     System.out.println("Service has successful added to room #" + room.getRoomNumber());
     System.out.println("Information about service below:");
-    hotel.printInformation.getPrintServiceDetails().printServiceDetails(serviceToAdd);
+    hotel.printInformation.getPrintServices().printServiceDetails(serviceToAdd);
   }
 
   public void addServiceToRoomByCounter(Hotel hotel, Room room, int serviceCounter) {
@@ -69,7 +69,6 @@ public class ProcessingServices {
     room.getRoomServices().putIfAbsent(serviceToAdd.getServiceId(), serviceToAdd);
     System.out.println("Service has successful added to room #" + room.getRoomNumber());
     System.out.println("Information about service below:");
-    hotel.printInformation.getPrintServiceDetails().printServiceDetails(serviceToAdd);
+    hotel.printInformation.getPrintServices().printServiceDetails(serviceToAdd);
   }
-
 }

@@ -1,16 +1,16 @@
 package eu.senla.utils.comparator.guest;
 
-import eu.senla.model.guest.GuestsAndRooms;
+import eu.senla.model.guest.Guest;
 import java.util.Comparator;
 
-public class ComparatorGuestByDateCheckOutDateAscending implements Comparator<GuestsAndRooms> {
+public class ComparatorGuestByDateCheckOutDateAscending implements Comparator<Guest> {
 
   @Override
-  public int compare(GuestsAndRooms o1, GuestsAndRooms o2) {
-    if (o1.getGuest().getGuestCheckOutDate().isBefore(o2.getGuest().getGuestCheckOutDate())) {
+  public int compare(Guest o1, Guest o2) {
+    if (o1.getGuestCheckOutDate().isBefore(o2.getGuestCheckOutDate())) {
       return -1;
     }
-    if (o1.getGuest().getGuestCheckOutDate().isAfter(o2.getGuest().getGuestCheckOutDate())) {
+    if (o1.getGuestCheckOutDate().isAfter(o2.getGuestCheckOutDate())) {
       return 1;
     }
     return 0;

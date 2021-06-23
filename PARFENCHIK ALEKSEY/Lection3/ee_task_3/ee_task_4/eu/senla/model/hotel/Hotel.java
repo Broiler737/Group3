@@ -3,27 +3,23 @@ package eu.senla.model.hotel;
 import eu.senla.api.print.PrintInformation;
 import eu.senla.dao.GuestDao;
 import eu.senla.dao.RoomsDao;
-import eu.senla.dao.ProcessingGuestList;
 import eu.senla.dao.ServicesDao;
-
 import eu.senla.model.guest.Guest;
-import eu.senla.model.guest.RegistrationGuests;
 import eu.senla.model.room.Room;
 import eu.senla.model.service.Service;
 import eu.senla.service.ProcessingGuests;
 import eu.senla.service.ProcessingRooms;
 import eu.senla.service.ProcessingServices;
-
 import java.time.LocalDate;
 
 public class Hotel {
 
   public final RoomsDao roomsDao = new RoomsDao();
   public final ServicesDao servicesDao = new ServicesDao();
-  public final ProcessingGuestList processingGuestList = new ProcessingGuestList();
   public final PrintInformation printInformation = new PrintInformation();
   public final GuestDao guestDao = new GuestDao();
-  private final ProcessingServices processingServices = new ProcessingServices(this.getServicesDao());
+  private final ProcessingServices processingServices = new ProcessingServices(
+      this.getServicesDao());
   private final ProcessingRooms processingRooms = new ProcessingRooms(this.getRoomsDao());
   private final ProcessingGuests processingGuests = new ProcessingGuests(this.getGuestDao());
 
@@ -33,9 +29,11 @@ public class Hotel {
     addingServices();
     checkInGuests();
     addingServicesToOneGuest();
-    addingServicesToWholeRoom();
-    getProcessingServices().addServiceToRoomByName(this,this.getProcessingRooms().selectRoomByNumber(this.roomsDao,1),"wifi");
-    getProcessingServices().addServiceToRoomByCounter(this,this.getProcessingRooms().selectRoomByNumber(this.roomsDao,1),2);
+    addingServicesToWholeRoom(1, getProcessingServices().selectServiceByName("cityTour"));
+    getProcessingServices().addServiceToRoomByName(this,
+        this.getProcessingRooms().selectRoomByNumber(this.roomsDao, 1), "wifi");
+    getProcessingServices().addServiceToRoomByCounter(this,
+        this.getProcessingRooms().selectRoomByNumber(this.roomsDao, 1), 2);
     checkOutGuests();
 
   }
@@ -46,7 +44,7 @@ public class Hotel {
     roomsDao.getRoomsList().add(new Room(3, 4, 2, 3.0));
     roomsDao.getRoomsList().add(new Room(4, 2, 1, 4.0));
     roomsDao.getRoomsList().add(new Room(5, 1, 1, 5.0));
-    roomsDao.getRoomsList().add(new Room(6, 2, 3, 6.0));
+    roomsDao.getRoomsList().add(new Room(6, 2, 4, 6.0));
     roomsDao.getRoomsList().add(new Room(7, 3, 3, 7.0));
     roomsDao.getRoomsList().add(new Room(8, 4, 3, 8.0));
     roomsDao.getRoomsList().get(4).setFree(false);
@@ -63,38 +61,42 @@ public class Hotel {
   }
 
   public void checkInGuests() {
-    guestDao.getGuestsList()
-        .add(guestDao.getGuestsList().size(), new RegistrationGuests(defineRoom(1, 2),
-            new Guest[]{new Guest("Margaret", "MP45458946", LocalDate.now(), 15)}));
-    System.out.println("Guest :");
-    printInformation.getPrintGuestCard().printGuestCard(this,
-        guestDao.getGuestsList().get(guestDao.getGuestsList().size() - 1)
-            .getRegisteredInRoomGuests()
-            .get(guestDao.getGuestsList().size() - 1));
-    System.out.println("has successful check-in");
-
-    guestDao.getGuestsList()
-        .add(guestDao.getGuestsList().size(), new RegistrationGuests(defineRoom(2, 3),
-            new Guest[]{new Guest("Mike", "FT1234567", LocalDate.now(), 10),
-                new Guest("Nick", "LR123456", LocalDate.now(), 10)}));
-    guestDao.getGuestsList()
-        .add(guestDao.getGuestsList().size(), new RegistrationGuests(defineRoom(1, 1),
-            new Guest[]{new Guest("Bob", "D126546L", LocalDate.now(), 3)}));
-    guestDao.getGuestsList()
-        .add(guestDao.getGuestsList().size(), new RegistrationGuests(defineRoom(1, 3),
-            new Guest[]{new Guest("Monica", "PK3650421", LocalDate.now(), 8)}));
-    guestDao.getGuestsList()
-        .add(guestDao.getGuestsList().size(), new RegistrationGuests(defineRoom(4, 2),
-            new Guest[]{new Guest("Monica", "QZ6542583", LocalDate.now(), 7),
-                new Guest("Dilan", "LR123456", LocalDate.now(), 7),
+    getProcessingGuests()
+        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 2)),
+            new Guest[]{new Guest("Alice", "MP45458946", LocalDate.now(), 15),
+                new Guest("Mark", "FT1234567", LocalDate.now(), 15)});
+    getProcessingGuests()
+        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 3)),
+            new Guest[]{
+                new Guest("Margaret", "MF4558946", LocalDate.now(), 10),
+                new Guest("Jane", "XT1248567", LocalDate.now(), 10)});
+    getProcessingGuests()
+        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 2)),
+            new Guest[]{
+                new Guest("Mike", "FT1234567", LocalDate.now(), 10),
+                new Guest("Nick", "LR123456", LocalDate.now(), 10)});
+    getProcessingGuests()
+        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 2)),
+            new Guest[]{
+                new Guest("Bob", "D126546L", LocalDate.now(), 3)});
+    getProcessingGuests()
+        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 2)),
+            new Guest[]{
+                new Guest("Monica", "D126546L", LocalDate.now(), 3)});
+    getProcessingGuests()
+        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 2)),
+            new Guest[]{
                 new Guest("Lilith", "LY15636858", LocalDate.now(), 7),
-                new Guest("Tom", "ZX670439", LocalDate.now(), 7)}));
+                new Guest("Dilan", "LR123456", LocalDate.now(), 7),
+                new Guest("Tom", "ZX670439", LocalDate.now(), 7),
+                new Guest("Kate", "PK3650421", LocalDate.now(), 7)});
     System.out.println("Print results of check-in guests");
-    printInformation.getPrintAllHotelGuestsByRoomNumber().printAllHotelGuestsByRoomNumber(this);
+    printInformation.getPrintGuests().printAllHotelGuestsByRoomNumber(this);
   }
 
   public void checkOutGuests() {
-    getProcessingGuests().getRegisteredGuests(2).checkOutGuests(this,getProcessingRooms().selectRoomByNumber(roomsDao, getProcessingGuests().getRegisteredGuests(2).getRoomNumber()));
+    getProcessingGuests()
+        .checkOutGuests(this, getProcessingRooms().selectRoomByNumber(this.getRoomsDao(), 1));
   }
 
   public void addingServicesToOneGuest() {
@@ -105,25 +107,26 @@ public class Hotel {
         .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Dilan"),
             "AirportTransfer");
     getProcessingGuests().addingServiceByNameToGuest(this,
-            getProcessingGuests().selectGuestByName(this, "Margaret"), "Wifi");
+        getProcessingGuests().selectGuestByName(this, "Margaret"), "Wifi");
     getProcessingGuests()
         .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Margaret"),
             "Laundry");
     getProcessingGuests().addingServiceByNameToGuest(this,
-            getProcessingGuests().selectGuestByName(this, "Tom"), "Parking");
+        getProcessingGuests().selectGuestByName(this, "Tom"), "Parking");
     getProcessingGuests().addingServiceByNameToGuest(this,
-            getProcessingGuests().selectGuestByName(this, "Bob"), "cityTour");
+        getProcessingGuests().selectGuestByName(this, "Bob"), "cityTour");
     getProcessingGuests().addingServiceByNameToGuest(this,
-            getProcessingGuests().selectGuestByName(this, "Mike"), "Wifi");
+        getProcessingGuests().selectGuestByName(this, "Mike"), "Wifi");
     getProcessingGuests().addingServiceByNameToGuest(this,
-            getProcessingGuests().selectGuestByName(this, "Monica"), "gym");
+        getProcessingGuests().selectGuestByName(this, "Monica"), "gym");
     getProcessingGuests()
         .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Margaret"),
             "Laundry");
     getProcessingGuests().addingServiceByNameToGuest(this,
-            getProcessingGuests().selectGuestByName(this, "Tom"), "Parking");
+        getProcessingGuests().selectGuestByName(this, "Tom"), "Parking");
     getProcessingGuests()
-        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Monica"), "massage");
+        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Monica"),
+            "massage");
     getProcessingGuests()
         .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Dilan"),
             "AirportTransfer");
@@ -132,33 +135,23 @@ public class Hotel {
             "AirportTransfer");
     System.out.println();
     getProcessingGuests()
-        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Dilan"), "Gym");
+        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Dilan"),
+            "Gym");
     getProcessingGuests()
-        .addingServiceByNumberToGuest(this, getProcessingGuests().selectGuestByName(this, "Tom"), 3);
+        .addingServiceByNumberToGuest(this, getProcessingGuests().selectGuestByName(this, "Tom"),
+            3);
     getProcessingGuests().addingServiceByNameToGuest(this,
-            getProcessingGuests().selectGuestByName(this, "Dilan"), "Parking");
+        getProcessingGuests().selectGuestByName(this, "Dilan"), "Parking");
   }
 
-  public void addingServicesToWholeRoom() {
-    for (int i = 0; i < getRoomForServices(6).getRegisteredInRoomGuests().size(); i++) {
-      getProcessingGuests().addingServiceByNameToGuest(this,
-          getRoomForServices(6).getRegisteredInRoomGuests().get(i), "Massage");
+  public void addingServicesToWholeRoom(int roomNumber, Service serviceToAdd) {
+    Room room = getProcessingRooms().selectRoomByNumber(getRoomsDao(), roomNumber);
+    for (int i = 0; i < room.getRoomCurrentGuest().size(); i++) {
+      getProcessingGuests()
+          .addingServiceByNameToGuest(this, getProcessingGuests()
+                  .selectGuestByName(this, room.getRoomCurrentGuest().get(i).getGuestName()),
+              serviceToAdd.getServiceName());
     }
-  }
-
-  public RegistrationGuests getRoomForServices(int roomNumber) {
-    RegistrationGuests tempRegistrationGuests = null;
-    for (int i = 0; i < guestDao.getGuestsList().size(); i++) {
-      if (guestDao.getGuestsList().get(i).getRoomNumber() == roomNumber) {
-        tempRegistrationGuests = guestDao.getGuestsList().get(i);
-        break;
-      }
-    }
-    return tempRegistrationGuests;
-  }
-
-  public Room defineRoom(int numberOfGuests, int preferableRoomRating) {
-    return this.getProcessingRooms().selectSuitableRoom(this.getRoomsDao(), numberOfGuests, preferableRoomRating);
   }
 
   public PrintInformation getPrintInformation() {

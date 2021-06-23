@@ -1,13 +1,14 @@
 package eu.senla.dao;
 
-import eu.senla.model.guest.RegistrationGuests;
+
+import eu.senla.model.guest.Guest;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GuestDao {
+  List<Guest> guestsList= new ArrayList<>();
 
-  final ArrayList<RegistrationGuests> guestsList = new ArrayList<>();
-
-  public ArrayList<RegistrationGuests> getGuestsList() {
+  public List<Guest> getGuestsList() {
     return guestsList;
   }
 }

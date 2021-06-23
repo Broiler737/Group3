@@ -2,8 +2,6 @@ package eu.senla.service;
 
 import eu.senla.dao.RoomsDao;
 import eu.senla.model.guest.Guest;
-import eu.senla.model.guest.GuestsAndRooms;
-import eu.senla.model.guest.RegistrationGuests;
 import eu.senla.model.hotel.Hotel;
 import eu.senla.model.room.Room;
 
@@ -13,30 +11,27 @@ import java.util.ArrayList;
 public class ProcessingRooms {
 
     private final RoomsDao roomsDao;
-        public ProcessingRooms(RoomsDao roomsDao) {
+
+    public ProcessingRooms(RoomsDao roomsDao) {
         this.roomsDao = roomsDao;
 
     }
 
     public Room[] getFreeInFutureRooms(Hotel informationToProcessing, LocalDate dateToCheck) {
-        RegistrationGuests[] tempHotelRoom;
-        tempHotelRoom = informationToProcessing.guestDao.getGuestsList()
-                .toArray(new RegistrationGuests[]{});
-        ArrayList<Room> tempListOfFreeInFutureRooms = new ArrayList<Room>(0);
         Room[] listOfFreeInFutureRooms;
-        for (int i = 0; i < tempHotelRoom.length; i++) {
+        ArrayList<Room> tempListOfFreeInFutureRooms = new ArrayList<>(0);
+        for (int i = 0; i < informationToProcessing.getRoomsDao().getRoomsList().size(); i++) {
             boolean isAllGuestCheckOut = false;
             for (int j = 0;
-                 j < informationToProcessing.guestDao.getGuestsList().get(i).getRegisteredInRoomGuests()
+                 j < informationToProcessing.getRoomsDao().getRoomsList().get(i).getRoomCurrentGuest()
                          .size();
                  j++) {
-                isAllGuestCheckOut = tempHotelRoom[i].getRegisteredInRoomGuests().get(j)
+                isAllGuestCheckOut = informationToProcessing.getRoomsDao().getRoomsList().get(i).getRoomCurrentGuest().get(j)
                         .getGuestCheckOutDate()
                         .isBefore(dateToCheck);
             }
             if (isAllGuestCheckOut) {
-                tempListOfFreeInFutureRooms.add(informationToProcessing.getProcessingRooms().selectRoomByNumber(informationToProcessing.roomsDao,
-                        informationToProcessing.guestDao.getGuestsList().get(i).getRoomNumber()));
+                tempListOfFreeInFutureRooms.add(informationToProcessing.getRoomsDao().getRoomsList().get(i));
             }
         }
         listOfFreeInFutureRooms = tempListOfFreeInFutureRooms.toArray(new Room[]{});
@@ -72,6 +67,7 @@ public class ProcessingRooms {
         room.setRoomPrice(roomPrice);
         System.out.println("Now room #" + room.getRoomNumber() + " costs " + roomPrice + "$ per night");
     }
+
     public void changeRoomState(Room room) {
         room.setInService();
         if (room.isInService()) {
@@ -79,12 +75,16 @@ public class ProcessingRooms {
         } else {
             System.out.println("Now room #" + room.getRoomNumber() + " is out of service");
         }
-    }      public final void changeRoomRating(Room room, int newRating) {
+    }
+
+    public final void changeRoomRating(Room room, int newRating) {
         room.setRoomRating(newRating);
     }
+
     public final void changeRoomCapacity(Room room, int newCapacity) {
         room.setRoomMaxCapacity(newCapacity);
     }
+
     public void processingArchivedGuests(Room roomToCheckOut, Guest[] currentRoomGuest) {
         Guest[][] tempArchivedGuest = new Guest[Room.getHistoryDepth()
                 + 1][roomToCheckOut.getRoomMaxCapacity()];
@@ -99,6 +99,7 @@ public class ProcessingRooms {
             roomToCheckOut.getRoomArchivedGuest()[i] = tempArchivedGuest[i];
         }
     }
+
     public Room selectRoomByNumber(RoomsDao roomsDao, int roomNumber) {
         Room tempRoom = null;
         for (Room rooms : roomsDao.getRoomsList()
@@ -109,7 +110,9 @@ public class ProcessingRooms {
             }
         }
         return tempRoom;
-    }      public Room selectSuitableRoom(RoomsDao roomsDao, int countOfGuests, int roomRating) {
+    }
+
+    public Room selectSuitableRoom(RoomsDao roomsDao, int countOfGuests, int roomRating) {
         try {
             Room tempRoom = null;
             Room[] tempHotelRoom = new Room[roomsDao.getRoomsList().size()];
@@ -124,7 +127,6 @@ public class ProcessingRooms {
                     System.out.println("The suitable room was found");
                     break;
                 } else {
-
                     if ((room.getRoomMaxCapacity() < countOfGuests)) {
                         System.out.println(
                                 "Room #" + room.getRoomNumber() + " has only " + room.getRoomMaxCapacity()
@@ -156,20 +158,29 @@ public class ProcessingRooms {
                 }
             }
             return tempRoom;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("System couldn't find any suitable room ");
             return null;
         }
-    }        public Room findGuestRoom(Hotel informationToProcessing, int guestHash) {
+    }
+
+    public Room findGuestRoom(Hotel informationToProcessing, int guestHash) {
         Room tempRoom = null;
-        int tempRoomNumber = 0;
-        GuestsAndRooms[] tempGuestListGuestsAndRoomsArray = informationToProcessing.processingGuestList
-                .getGuestsAndRooms(informationToProcessing);
-        for (GuestsAndRooms guestsAndRooms : tempGuestListGuestsAndRoomsArray) {
-            if (guestsAndRooms.getGuest().hashCode() == guestHash) {
-                tempRoomNumber = guestsAndRooms.getRoomNumber();
+        for (int i = 0; i < informationToProcessing.getRoomsDao().getRoomsList().size(); i++) {
+            if (!informationToProcessing.getRoomsDao().getRoomsList().get(i)
+                .getRoomCurrentGuest()
+                .isEmpty()) {
+                for (int j = 0;
+                    j < informationToProcessing.getRoomsDao().getRoomsList().get(i)
+                        .getRoomCurrentGuest().size();
+                    j++) {
+                    if (informationToProcessing.getRoomsDao().getRoomsList().get(i).getRoomCurrentGuest()
+                        .get(j).hashCode()==guestHash) {
+                        tempRoom  = informationToProcessing.getRoomsDao().getRoomsList().get(i);
+                        break;
+                    }
+                }
             }
-            tempRoom = informationToProcessing.getProcessingRooms().findRoomByNumber(tempRoomNumber);
         }
         return tempRoom;
     }

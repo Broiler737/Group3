@@ -101,7 +101,7 @@ public class ProcessingUserInput {
   }
   public boolean processUserBooleanInput() {
     boolean tempUserBooleanInput = false;
-    Character tempUserCharInput;
+    char tempUserCharInput;
     boolean isRight = false;
     Scanner readInput = new Scanner(System.in);
     do {

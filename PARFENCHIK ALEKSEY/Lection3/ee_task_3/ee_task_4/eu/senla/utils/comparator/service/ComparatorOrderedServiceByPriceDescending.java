@@ -1,12 +1,13 @@
 package eu.senla.utils.comparator.service;
 
-import eu.senla.model.guest.OrderedService;
+import eu.senla.model.guest.Guest;
+
 import java.util.Comparator;
 
-public class ComparatorOrderedServiceByPriceDescending implements Comparator<OrderedService> {
+public class ComparatorOrderedServiceByPriceDescending implements Comparator<Guest.OrderedService> {
 
   @Override
-  public int compare(OrderedService o1, OrderedService o2) {
+  public int compare(Guest.OrderedService o1, Guest.OrderedService o2) {
     if (o1.getOrderedService().getServicePrice() < o2.getOrderedService().getServicePrice()) {
       return 1;
     }
