@@ -1,10 +1,8 @@
 package eu.senla.model.room;
 
 import eu.senla.model.guest.Guest;
-import eu.senla.model.service.Service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 public class Room {
 
@@ -15,7 +13,6 @@ public class Room {
     private boolean isFree;
     private boolean isInService;
     private static final int HISTORY_DEPTH = 3;
-    private final TreeMap<Integer, Service> roomServices = new TreeMap<>();
     private List<Guest> roomCurrentGuest = new ArrayList<>();
     private Guest[][] roomArchivedGuest = new Guest[HISTORY_DEPTH][roomMaxCapacity];
 
@@ -63,10 +60,6 @@ public class Room {
 
     public int getRoomNumber() {
         return roomNumber;
-    }
-
-    public TreeMap<Integer, Service> getRoomServices() {
-        return roomServices;
     }
 
     public double getRoomPrice() {

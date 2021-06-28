@@ -2,8 +2,12 @@ package eu.senla.api.print.room;
 
 import eu.senla.model.hotel.Hotel;
 import eu.senla.model.room.Room;
-import eu.senla.model.service.Service;
-import eu.senla.utils.comparator.room.*;
+import eu.senla.utils.comparator.room.ComparatorRoomByCapacityAscending;
+import eu.senla.utils.comparator.room.ComparatorRoomByCapacityDescending;
+import eu.senla.utils.comparator.room.ComparatorRoomByPriceAscending;
+import eu.senla.utils.comparator.room.ComparatorRoomByPriceDescending;
+import eu.senla.utils.comparator.room.ComparatorRoomByRatingAscending;
+import eu.senla.utils.comparator.room.ComparatorRoomByRatingDescending;
 import java.util.Arrays;
 
 public class PrintRooms {
@@ -14,12 +18,6 @@ public class PrintRooms {
     System.out.println("Room Number #" + room.getRoomNumber());
     System.out.println("The room has " + room.getRoomRating() + "-star rating");
     System.out.println("Maximum guests in room is " + room.getRoomMaxCapacity() + " guests");
-    System.out.println("In this room guest could use these services:");
-    for (Service roomServicesToPrint : room.getRoomServices().values()
-    ) {
-      hotelInformationToPrint.printInformation.getPrintServices()
-          .printServiceDetails(roomServicesToPrint);
-    }
     System.out.println("Price per night in this room is " + room.getRoomPrice() + "$");
     System.out.println("Is this room in service? - " + room.isInService());
     System.out.println("Is this room free? - " + room.isFree());

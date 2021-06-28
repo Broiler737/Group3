@@ -3,6 +3,7 @@ package eu.senla.api.print.guest;
 import eu.senla.model.guest.Guest;
 import eu.senla.model.hotel.Hotel;
 import eu.senla.model.room.Room;
+import eu.senla.service.ServiceService.OrderedService;
 import eu.senla.utils.comparator.guest.ComparatorGuestByDateCheckOutDateAscending;
 import eu.senla.utils.comparator.guest.ComparatorGuestByDateCheckOutDateDescending;
 import eu.senla.utils.comparator.guest.ComparatorGuestByNameAscending;
@@ -18,13 +19,13 @@ public class PrintGuests {
       informationToProcessing.getPrintInformation().getPrintGuests()
           .printGuestServices(informationToProcessing, guest);
       System.out
-          .println("Guest's debt for services is " + informationToProcessing.getProcessingGuests()
+          .println("Guest's debt for services is " + informationToProcessing.getGuestService()
               .countDebtForServiceOfGuest(guest) + "$");
     } else {
       System.out.println("Guest haven't ordered any service");
     }
     System.out.println(
-        "Guest debt is " + informationToProcessing.getProcessingGuests()
+        "Guest debt is " + informationToProcessing.getGuestService()
             .countGuestDebt(informationToProcessing, guest, guest.hashCode())
             + "$ in this moment");
     System.out.println("********** ********** **********");
@@ -97,7 +98,7 @@ public class PrintGuests {
     Arrays.sort(tempGuestsArray, 0, tempGuestsArray.length,
         new ComparatorGuestByDateCheckOutDateAscending());
     for (Guest guest : tempGuestsArray) {
-      System.out.println("Room #" + hotelInformationToPrint.getProcessingRooms()
+      System.out.println("Room #" + hotelInformationToPrint.getRoomService()
           .findGuestRoom(hotelInformationToPrint, guest.hashCode()));
       hotelInformationToPrint.printInformation.getPrintGuests()
           .printGuestCard(hotelInformationToPrint, guest);
@@ -124,8 +125,8 @@ public class PrintGuests {
     Arrays.sort(tempGuestsArray, 0, tempGuestsArray.length,
         new ComparatorGuestByDateCheckOutDateDescending());
     for (Guest guest : tempGuestsArray) {
-      System.out.println("Room #" + hotelInformationToPrint.getProcessingRooms()
-          .findGuestRoom(hotelInformationToPrint, guest.hashCode()));
+      System.out.println("Room #" + hotelInformationToPrint.getRoomService()
+          .findGuestRoom(hotelInformationToPrint, guest.hashCode()).getRoomNumber());
       hotelInformationToPrint.printInformation.getPrintGuests()
           .printGuestCard(hotelInformationToPrint, guest);
     }
@@ -151,8 +152,8 @@ public class PrintGuests {
     Arrays.sort(tempGuestsArray, 0, tempGuestsArray.length,
         new ComparatorGuestByNameAscending());
     for (Guest guest : tempGuestsArray) {
-      System.out.println("Room #" + hotelInformationToPrint.getProcessingRooms()
-          .findGuestRoom(hotelInformationToPrint, guest.hashCode()));
+      System.out.println("Room #" + hotelInformationToPrint.getRoomService()
+          .findGuestRoom(hotelInformationToPrint, guest.hashCode()).getRoomNumber());
       hotelInformationToPrint.printInformation.getPrintGuests()
           .printGuestCard(hotelInformationToPrint, guest);
     }
@@ -183,15 +184,15 @@ public class PrintGuests {
           - i];
     }
     for (Guest guest : tempGuestsReverseArray) {
-      System.out.println("Room #" + hotelInformationToPrint.getProcessingRooms()
-          .findGuestRoom(hotelInformationToPrint, guest.hashCode()));
+      System.out.println("Room #" + hotelInformationToPrint.getRoomService()
+          .findGuestRoom(hotelInformationToPrint, guest.hashCode()).getRoomNumber());
       hotelInformationToPrint.printInformation.getPrintGuests()
           .printGuestCard(hotelInformationToPrint, guest);
     }
   }
 
   public void printGuestServices(Hotel informationToProcessing, Guest guest) {
-    for (Guest.OrderedService orderedService : guest.getOrderedServices()) {
+    for (OrderedService orderedService : guest.getOrderedServices()) {
       informationToProcessing.printInformation.getPrintServices()
           .printServiceSimple(orderedService.getOrderedService());
       if (orderedService.getOrderedService().isPerDay()) {

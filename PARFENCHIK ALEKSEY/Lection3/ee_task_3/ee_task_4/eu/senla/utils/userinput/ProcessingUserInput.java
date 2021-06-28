@@ -99,6 +99,7 @@ public class ProcessingUserInput {
     } while (!isRight);
     return tempUserNumericInput;
   }
+
   public boolean processUserBooleanInput() {
     boolean tempUserBooleanInput = false;
     char tempUserCharInput;
@@ -106,9 +107,9 @@ public class ProcessingUserInput {
     Scanner readInput = new Scanner(System.in);
     do {
       tempUserCharInput = readInput.nextLine().toUpperCase().charAt(0);
-      if ((tempUserCharInput =='Y') || (tempUserCharInput =='N') ){
-        if (tempUserCharInput =='Y'){
-          tempUserBooleanInput=true;
+      if ((tempUserCharInput == 'Y') || (tempUserCharInput == 'N')) {
+        if (tempUserCharInput == 'Y') {
+          tempUserBooleanInput = true;
         }
         isRight = true;
       } else {

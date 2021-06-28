@@ -93,13 +93,13 @@ public class PrintInformation {
     System.out.println();
     System.out.println("printGuestCard and debt");
     printGuests.printGuestCard(hotelInformationToPrint,
-        hotelInformationToPrint.getProcessingGuests()
+        hotelInformationToPrint.getGuestService()
             .selectGuestByName(hotelInformationToPrint, "Mike"));
     System.out.println();
     System.out.println("printGuestServicesByNameAscending");
     hotelInformationToPrint.getPrintInformation().getPrintServices()
         .printGuestServicesByNameDescending(hotelInformationToPrint,
-            hotelInformationToPrint.getProcessingGuests()
+            hotelInformationToPrint.getGuestService()
                 .selectGuestByName(hotelInformationToPrint, "Nick").hashCode());
     System.out.println();
     System.out.println("printGuestServicesByPriceAscending");
@@ -133,7 +133,7 @@ public class PrintInformation {
     hotelInformationToPrint.getPrintInformation().getPrintServices()
         .printServicesByTypeDescending(hotelInformationToPrint);
     printRooms.printRoomDetails(hotelInformationToPrint,
-        hotelInformationToPrint.getProcessingRooms().findRoomByNumber(2));
+        hotelInformationToPrint.getRoomService().findRoomByNumber(hotelInformationToPrint, 2));
   }
 
   public PrintServices getPrintServices() {

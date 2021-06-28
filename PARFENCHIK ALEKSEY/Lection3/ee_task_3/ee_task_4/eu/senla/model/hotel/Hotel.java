@@ -7,9 +7,9 @@ import eu.senla.dao.ServicesDao;
 import eu.senla.model.guest.Guest;
 import eu.senla.model.room.Room;
 import eu.senla.model.service.Service;
-import eu.senla.service.ProcessingGuests;
-import eu.senla.service.ProcessingRooms;
-import eu.senla.service.ProcessingServices;
+import eu.senla.service.GuestService;
+import eu.senla.service.RoomService;
+import eu.senla.service.ServiceService;
 import java.time.LocalDate;
 
 public class Hotel {
@@ -18,10 +18,9 @@ public class Hotel {
   public final ServicesDao servicesDao = new ServicesDao();
   public final PrintInformation printInformation = new PrintInformation();
   public final GuestDao guestDao = new GuestDao();
-  private final ProcessingServices processingServices = new ProcessingServices(
-      this.getServicesDao());
-  private final ProcessingRooms processingRooms = new ProcessingRooms(this.getRoomsDao());
-  private final ProcessingGuests processingGuests = new ProcessingGuests(this.getGuestDao());
+  private final ServiceService serviceService = new ServiceService();
+  private final RoomService roomService = new RoomService();
+  private final GuestService guestService = new GuestService();
 
 
   public Hotel() {
@@ -29,62 +28,59 @@ public class Hotel {
     addingServices();
     checkInGuests();
     addingServicesToOneGuest();
-    addingServicesToWholeRoom(1, getProcessingServices().selectServiceByName("cityTour"));
-    getProcessingServices().addServiceToRoomByName(this,
-        this.getProcessingRooms().selectRoomByNumber(this.roomsDao, 1), "wifi");
-    getProcessingServices().addServiceToRoomByCounter(this,
-        this.getProcessingRooms().selectRoomByNumber(this.roomsDao, 1), 2);
+    addingServicesToWholeRoom(1,
+        getServiceService().selectAvailableServiceByName(this, "cityTour"));
     checkOutGuests();
 
   }
 
   public void addingRooms() {
-    roomsDao.getRoomsList().add(new Room(1, 2, 2, 1.0));
-    roomsDao.getRoomsList().add(new Room(2, 3, 2, 2.0));
-    roomsDao.getRoomsList().add(new Room(3, 4, 2, 3.0));
-    roomsDao.getRoomsList().add(new Room(4, 2, 1, 4.0));
-    roomsDao.getRoomsList().add(new Room(5, 1, 1, 5.0));
-    roomsDao.getRoomsList().add(new Room(6, 2, 4, 6.0));
-    roomsDao.getRoomsList().add(new Room(7, 3, 3, 7.0));
-    roomsDao.getRoomsList().add(new Room(8, 4, 3, 8.0));
+    getRoomService().addRoom(this, 1, 2, 2, 1);
+    getRoomService().addRoom(this, 2, 3, 2, 2);
+    getRoomService().addRoom(this, 3, 4, 2, 3);
+    getRoomService().addRoom(this, 4, 2, 1, 4);
+    getRoomService().addRoom(this, 5, 1, 1, 5);
+    getRoomService().addRoom(this, 6, 2, 4, 6);
+    getRoomService().addRoom(this, 7, 3, 3, 7);
+    getRoomService().addRoom(this, 8, 4, 3, 8);
     roomsDao.getRoomsList().get(4).setFree(false);
   }
 
   public void addingServices() {
-    processingServices.addService(new Service("WiFi", 1.0, "InHouse", true));
-    processingServices.addService(new Service("Laundry", 3.0, "InHouse", false));
-    processingServices.addService(new Service("Parking", 1.5, "Outdoor", true));
-    processingServices.addService(new Service("CityTour", 20.0, "Outdoor", false));
-    processingServices.addService(new Service("Massage", 10.0, "InHouse", false));
-    processingServices.addService(new Service("AirportTransfer", 15.0, "Outdoor", false));
-    processingServices.addService(new Service("Gym", 2.0, "InHouse", false));
+    serviceService.addService(this, "WiFi", 1.0, "InHouse", true);
+    serviceService.addService(this, "Laundry", 3.0, "InHouse", false);
+    serviceService.addService(this, "Parking", 1.5, "Outdoor", true);
+    serviceService.addService(this, "CityTour", 20.0, "Outdoor", false);
+    serviceService.addService(this, "Massage", 10.0, "InHouse", false);
+    serviceService.addService(this, "AirportTransfer", 15.0, "Outdoor", false);
+    serviceService.addService(this, "Gym", 2.0, "InHouse", false);
   }
 
   public void checkInGuests() {
-    getProcessingGuests()
-        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 2)),
+    getGuestService()
+        .checkInGuest((getRoomService().selectSuitableRoom(getRoomsDao(), 2, 2)),
             new Guest[]{new Guest("Alice", "MP45458946", LocalDate.now(), 15),
                 new Guest("Mark", "FT1234567", LocalDate.now(), 15)});
-    getProcessingGuests()
-        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 3)),
+    getGuestService()
+        .checkInGuest((getRoomService().selectSuitableRoom(getRoomsDao(), 2, 3)),
             new Guest[]{
                 new Guest("Margaret", "MF4558946", LocalDate.now(), 10),
                 new Guest("Jane", "XT1248567", LocalDate.now(), 10)});
-    getProcessingGuests()
-        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 2)),
+    getGuestService()
+        .checkInGuest((getRoomService().selectSuitableRoom(getRoomsDao(), 2, 2)),
             new Guest[]{
                 new Guest("Mike", "FT1234567", LocalDate.now(), 10),
                 new Guest("Nick", "LR123456", LocalDate.now(), 10)});
-    getProcessingGuests()
-        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 2)),
+    getGuestService()
+        .checkInGuest((getRoomService().selectSuitableRoom(getRoomsDao(), 2, 2)),
             new Guest[]{
                 new Guest("Bob", "D126546L", LocalDate.now(), 3)});
-    getProcessingGuests()
-        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 2)),
+    getGuestService()
+        .checkInGuest((getRoomService().selectSuitableRoom(getRoomsDao(), 2, 2)),
             new Guest[]{
                 new Guest("Monica", "D126546L", LocalDate.now(), 3)});
-    getProcessingGuests()
-        .checkInGuest((getProcessingRooms().selectSuitableRoom(getRoomsDao(), 2, 2)),
+    getGuestService()
+        .checkInGuest((getRoomService().selectSuitableRoom(getRoomsDao(), 2, 2)),
             new Guest[]{
                 new Guest("Lilith", "LY15636858", LocalDate.now(), 7),
                 new Guest("Dilan", "LR123456", LocalDate.now(), 7),
@@ -95,60 +91,60 @@ public class Hotel {
   }
 
   public void checkOutGuests() {
-    getProcessingGuests()
-        .checkOutGuests(this, getProcessingRooms().selectRoomByNumber(this.getRoomsDao(), 1));
+    getGuestService()
+        .checkOutGuests(this, getRoomService().selectRoomByNumber(this.getRoomsDao(), 1));
   }
 
   public void addingServicesToOneGuest() {
-    getProcessingGuests()
-        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Margaret"),
+    getGuestService()
+        .addingServiceByNameToGuest(this, getGuestService().selectGuestByName(this, "Margaret"),
             "laundry");
-    getProcessingGuests()
-        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Dilan"),
+    getGuestService()
+        .addingServiceByNameToGuest(this, getGuestService().selectGuestByName(this, "Dilan"),
             "AirportTransfer");
-    getProcessingGuests().addingServiceByNameToGuest(this,
-        getProcessingGuests().selectGuestByName(this, "Margaret"), "Wifi");
-    getProcessingGuests()
-        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Margaret"),
+    getGuestService().addingServiceByNameToGuest(this,
+        getGuestService().selectGuestByName(this, "Margaret"), "Wifi");
+    getGuestService()
+        .addingServiceByNameToGuest(this, getGuestService().selectGuestByName(this, "Margaret"),
             "Laundry");
-    getProcessingGuests().addingServiceByNameToGuest(this,
-        getProcessingGuests().selectGuestByName(this, "Tom"), "Parking");
-    getProcessingGuests().addingServiceByNameToGuest(this,
-        getProcessingGuests().selectGuestByName(this, "Bob"), "cityTour");
-    getProcessingGuests().addingServiceByNameToGuest(this,
-        getProcessingGuests().selectGuestByName(this, "Mike"), "Wifi");
-    getProcessingGuests().addingServiceByNameToGuest(this,
-        getProcessingGuests().selectGuestByName(this, "Monica"), "gym");
-    getProcessingGuests()
-        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Margaret"),
+    getGuestService().addingServiceByNameToGuest(this,
+        getGuestService().selectGuestByName(this, "Tom"), "Parking");
+    getGuestService().addingServiceByNameToGuest(this,
+        getGuestService().selectGuestByName(this, "Bob"), "cityTour");
+    getGuestService().addingServiceByNameToGuest(this,
+        getGuestService().selectGuestByName(this, "Mike"), "Wifi");
+    getGuestService().addingServiceByNameToGuest(this,
+        getGuestService().selectGuestByName(this, "Monica"), "gym");
+    getGuestService()
+        .addingServiceByNameToGuest(this, getGuestService().selectGuestByName(this, "Margaret"),
             "Laundry");
-    getProcessingGuests().addingServiceByNameToGuest(this,
-        getProcessingGuests().selectGuestByName(this, "Tom"), "Parking");
-    getProcessingGuests()
-        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Monica"),
+    getGuestService().addingServiceByNameToGuest(this,
+        getGuestService().selectGuestByName(this, "Tom"), "Parking");
+    getGuestService()
+        .addingServiceByNameToGuest(this, getGuestService().selectGuestByName(this, "Monica"),
             "massage");
-    getProcessingGuests()
-        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Dilan"),
+    getGuestService()
+        .addingServiceByNameToGuest(this, getGuestService().selectGuestByName(this, "Dilan"),
             "AirportTransfer");
-    getProcessingGuests()
-        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Margaret"),
+    getGuestService()
+        .addingServiceByNameToGuest(this, getGuestService().selectGuestByName(this, "Margaret"),
             "AirportTransfer");
     System.out.println();
-    getProcessingGuests()
-        .addingServiceByNameToGuest(this, getProcessingGuests().selectGuestByName(this, "Dilan"),
+    getGuestService()
+        .addingServiceByNameToGuest(this, getGuestService().selectGuestByName(this, "Dilan"),
             "Gym");
-    getProcessingGuests()
-        .addingServiceByNumberToGuest(this, getProcessingGuests().selectGuestByName(this, "Tom"),
+    getGuestService()
+        .addingServiceByNumberToGuest(this, getGuestService().selectGuestByName(this, "Tom"),
             3);
-    getProcessingGuests().addingServiceByNameToGuest(this,
-        getProcessingGuests().selectGuestByName(this, "Dilan"), "Parking");
+    getGuestService().addingServiceByNameToGuest(this,
+        getGuestService().selectGuestByName(this, "Dilan"), "Parking");
   }
 
   public void addingServicesToWholeRoom(int roomNumber, Service serviceToAdd) {
-    Room room = getProcessingRooms().selectRoomByNumber(getRoomsDao(), roomNumber);
+    Room room = getRoomService().selectRoomByNumber(getRoomsDao(), roomNumber);
     for (int i = 0; i < room.getRoomCurrentGuest().size(); i++) {
-      getProcessingGuests()
-          .addingServiceByNameToGuest(this, getProcessingGuests()
+      getGuestService()
+          .addingServiceByNameToGuest(this, getGuestService()
                   .selectGuestByName(this, room.getRoomCurrentGuest().get(i).getGuestName()),
               serviceToAdd.getServiceName());
     }
@@ -162,20 +158,20 @@ public class Hotel {
     return roomsDao;
   }
 
-  public ProcessingGuests getProcessingGuests() {
-    return processingGuests;
+  public GuestService getGuestService() {
+    return guestService;
   }
 
   public ServicesDao getServicesDao() {
     return servicesDao;
   }
 
-  public ProcessingServices getProcessingServices() {
-    return processingServices;
+  public ServiceService getServiceService() {
+    return serviceService;
   }
 
-  public ProcessingRooms getProcessingRooms() {
-    return processingRooms;
+  public RoomService getRoomService() {
+    return roomService;
   }
 
   public GuestDao getGuestDao() {
