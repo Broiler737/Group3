@@ -10,7 +10,6 @@ public class Main {
     Hotel hotel = new Hotel();
 
 
-    initMenu.initMainMenu(hotel);
     System.out.println(hotel);
 
   }
