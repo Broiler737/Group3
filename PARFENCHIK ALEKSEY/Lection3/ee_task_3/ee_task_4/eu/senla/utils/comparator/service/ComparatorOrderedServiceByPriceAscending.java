@@ -7,10 +7,10 @@ public class ComparatorOrderedServiceByPriceAscending implements Comparator<Orde
 
   @Override
   public int compare(OrderedService o1, OrderedService o2) {
-    if (o1.getOrderedService().getServicePrice() < o2.getOrderedService().getServicePrice()) {
+    if (o1.getOrderedService().getPrice() < o2.getOrderedService().getPrice()) {
       return -1;
     }
-    if (o1.getOrderedService().getServicePrice() > o2.getOrderedService().getServicePrice()) {
+    if (o1.getOrderedService().getPrice() > o2.getOrderedService().getPrice()) {
       return 1;
     }
     return 0;

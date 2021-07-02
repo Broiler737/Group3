@@ -10,10 +10,10 @@ public class ComparatorServiceByPriceDescending implements Comparator<Service> {
 
   @Override
   public int compare(Service o1, Service o2) {
-    if (o1.getServicePrice() < o2.getServicePrice()) {
+    if (o1.getPrice() < o2.getPrice()) {
       return 1;
     }
-    if (o1.getServicePrice() > o2.getServicePrice()) {
+    if (o1.getPrice() > o2.getPrice()) {
       return -1;
     }
     return 0;

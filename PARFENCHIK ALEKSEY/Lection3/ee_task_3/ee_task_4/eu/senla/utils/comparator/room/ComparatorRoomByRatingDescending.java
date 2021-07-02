@@ -7,10 +7,10 @@ public class ComparatorRoomByRatingDescending implements Comparator<Room> {
 
   @Override
   public int compare(Room o1, Room o2) {
-    if (o1.getRoomRating() < o2.getRoomRating()) {
+    if (o1.getRating() < o2.getRating()) {
       return 1;
     }
-    if (o1.getRoomRating() > o2.getRoomRating()) {
+    if (o1.getRating() > o2.getRating()) {
       return -1;
     }
     return 0;

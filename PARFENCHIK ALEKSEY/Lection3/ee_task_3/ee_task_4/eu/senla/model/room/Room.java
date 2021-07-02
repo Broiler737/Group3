@@ -6,40 +6,40 @@ import java.util.List;
 
 public class Room {
 
-    private final int roomNumber;
-    private double roomPrice;
-    private int roomMaxCapacity;
-    private int roomRating;
+    private final int number;
+    private double price;
+    private int maxCapacity;
+    private int rating;
     private boolean isFree;
     private boolean isInService;
     private static final int HISTORY_DEPTH = 3;
-    private List<Guest> roomCurrentGuest = new ArrayList<>();
-    private Guest[][] roomArchivedGuest = new Guest[HISTORY_DEPTH][roomMaxCapacity];
+    private List<Guest> currentGuest = new ArrayList<>();
+    private Guest[][] archivedGuest = new Guest[HISTORY_DEPTH][maxCapacity];
 
 
-    public Room(int roomNumber, int roomMaxCapacity, int roomRating, double roomPrice) {
-        this.roomNumber = roomNumber;
-        this.roomPrice = roomPrice;
-        this.roomMaxCapacity = roomMaxCapacity;
-        this.roomRating = roomRating;
+    public Room(int number, int maxCapacity, int rating, double price) {
+        this.number = number;
+        this.price = price;
+        this.maxCapacity = maxCapacity;
+        this.rating = rating;
         this.isFree = true;
         this.isInService = true;
     }
 
-    public void setRoomPrice(double roomPrice) {
-        this.roomPrice = roomPrice;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public void setRoomMaxCapacity(int roomMaxCapacity) {
-        this.roomMaxCapacity = roomMaxCapacity;
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
     }
 
-    public List<Guest> getRoomCurrentGuest() {
-        return roomCurrentGuest;
+    public List<Guest> getCurrentGuest() {
+        return currentGuest;
     }
 
-    public void setRoomRating(int roomRating) {
-        this.roomRating = roomRating;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public void setInService() {
@@ -54,20 +54,20 @@ public class Room {
         return HISTORY_DEPTH;
     }
 
-    public Guest[][] getRoomArchivedGuest() {
-        return roomArchivedGuest;
+    public Guest[][] getArchivedGuest() {
+        return archivedGuest;
     }
 
-    public int getRoomNumber() {
-        return roomNumber;
+    public int getNumber() {
+        return number;
     }
 
-    public double getRoomPrice() {
-        return roomPrice;
+    public double getPrice() {
+        return price;
     }
 
-    public int getRoomRating() {
-        return roomRating;
+    public int getRating() {
+        return rating;
     }
 
     public boolean isFree() {
@@ -78,7 +78,7 @@ public class Room {
         return isInService;
     }
 
-    public int getRoomMaxCapacity() {
-        return roomMaxCapacity;
+    public int getMaxCapacity() {
+        return maxCapacity;
     }
 }

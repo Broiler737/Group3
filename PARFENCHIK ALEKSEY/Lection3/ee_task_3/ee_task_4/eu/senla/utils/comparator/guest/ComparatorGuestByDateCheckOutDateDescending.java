@@ -7,10 +7,10 @@ public class ComparatorGuestByDateCheckOutDateDescending implements Comparator<G
 
   @Override
   public int compare(Guest o1, Guest o2) {
-    if (o1.getGuestCheckOutDate().isBefore(o2.getGuestCheckOutDate())) {
+    if (o1.getCheckOutDate().isBefore(o2.getCheckOutDate())) {
       return 1;
     }
-    if (o1.getGuestCheckOutDate().isAfter(o2.getGuestCheckOutDate())) {
+    if (o1.getCheckOutDate().isAfter(o2.getCheckOutDate())) {
       return -1;
     }
     return 0;

@@ -5,61 +5,61 @@ import java.util.Objects;
 
 public class Service {
 
-  private int serviceId;
-  private final String serviceName;
-  private final String serviceType;
-  private double servicePrice;
-  private boolean isAvailable;
+  private int id;
+  private final String name;
+  private final String type;
+  private double price;
+ // private boolean isAvailable;
   private final boolean perDay;
 
-  public Service(String serviceName, Double servicePrice, String serviceType, Boolean perDay) {
-    this.serviceName = serviceName;
-    this.servicePrice = servicePrice;
-    this.serviceType = serviceType;
+  public Service(String name, Double price, String type, Boolean perDay) {
+    this.name = name;
+    this.price = price;
+    this.type = type;
     this.perDay = perDay;
-    this.isAvailable = true;
+  //  this.isAvailable = true;
   }
 
-  public void setServiceId(int serviceId) {
-    this.serviceId = serviceId;
+  public void setId(int id) {
+    this.id = id;
   }
 
-  public void setServicePrice(double servicePrice) {
-    this.servicePrice = servicePrice;
+  public void setPrice(double price) {
+    this.price = price;
   }
 
-  public void setAvailable(boolean available) {
+ /* public void setAvailable(boolean available) {
     this.isAvailable = available;
+  }*/
+
+  public int getId() {
+    return id;
   }
 
-  public int getServiceId() {
-    return serviceId;
+  public String getName() {
+    return name;
   }
 
-  public String getServiceName() {
-    return serviceName;
+  public String getType() {
+    return type;
   }
 
-  public String getServiceType() {
-    return serviceType;
-  }
-
-  public double getServicePrice() {
-    return servicePrice;
+  public double getPrice() {
+    return price;
   }
 
   public boolean isPerDay() {
     return perDay;
   }
 
-  public boolean isAvailable() {
+  /*public boolean isAvailable() {
     return isAvailable;
-  }
+  }*/
 
 
   @Override
   public int hashCode() {
-    return Objects.hash(serviceId, serviceName, serviceType);
+    return Objects.hash(id, name, type);
   }
 }
 

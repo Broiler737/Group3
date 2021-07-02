@@ -7,6 +7,6 @@ public class ComparatorServiceByNameAscending implements Comparator<Service> {
 
   @Override
   public int compare(Service o1, Service o2) {
-    return o1.getServiceName().compareTo(o2.getServiceName());
+    return o1.getName().compareTo(o2.getName());
   }
 }

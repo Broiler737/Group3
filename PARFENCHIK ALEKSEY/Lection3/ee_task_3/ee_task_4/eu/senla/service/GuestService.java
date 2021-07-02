@@ -15,13 +15,13 @@ public class GuestService {
     int counterOfRegisteredGuests = 0;
     for (int i = 0; i < informationToProcessing.getRoomsDao().getRoomsList().size(); i++) {
       if (!informationToProcessing.getRoomsDao().getRoomsList().get(i)
-          .getRoomCurrentGuest().isEmpty()) {
+          .getCurrentGuest().isEmpty()) {
         for (int j = 0;
             j < informationToProcessing.getRoomsDao().getRoomsList().get(i)
-                .getRoomCurrentGuest()
+                .getCurrentGuest()
                 .size(); j++) {
           if (informationToProcessing.getRoomsDao().getRoomsList().get(i)
-              .getRoomCurrentGuest()
+              .getCurrentGuest()
               .get(j) != null) {
             counterOfRegisteredGuests++;
           }
@@ -38,11 +38,11 @@ public class GuestService {
       if (orderedService.getOrderedService().isPerDay()) {
         tempDebt = tempDebt
             + orderedService.getDurationOfUseService() * orderedService.getOrderedService()
-            .getServicePrice();
+            .getPrice();
       } else {
         tempDebt = tempDebt
             + orderedService.getCountOfOrderingService() * orderedService.getOrderedService()
-            .getServicePrice();
+            .getPrice();
       }
       tempServiceDebt = tempServiceDebt + tempDebt;
     }
@@ -54,9 +54,9 @@ public class GuestService {
     double tempServiceDebt = countDebtForServiceOfGuest(guest);
     tempDebt = tempDebt + tempServiceDebt;
     double roomPrice = informationToProcessing.getRoomService()
-        .findGuestRoom(informationToProcessing, guestHash).getRoomPrice();
-    tempDebt = tempDebt + guest.getGuestDurationOfStay() * roomPrice;
-    guest.setGuestDebt(tempDebt);
+        .findGuestRoom(informationToProcessing, guestHash).getPrice();
+    tempDebt = tempDebt + guest.getDurationOfStay() * roomPrice;
+    guest.setDebt(tempDebt);
     return tempDebt;
   }
 
@@ -67,7 +67,7 @@ public class GuestService {
       int numberOfRecord = 0;
       int tempDurationOfUseService = 0;
       for (int j = 0; j < guest.getOrderedServices().size(); j++) {
-        isServiceAdded = guest.getOrderedServices().get(j).getOrderedService().getServiceName()
+        isServiceAdded = guest.getOrderedServices().get(j).getOrderedService().getName()
             .toLowerCase()
             .equals(serviceNameToAdd.toLowerCase());
         if (isServiceAdded) {
@@ -99,7 +99,7 @@ public class GuestService {
       int serviceNumberToAdd) {
     if (guest.getOrderedServices().size() > 0) {
       for (int i = 0; i < guest.getOrderedServices().size(); i++) {
-        if (guest.getOrderedServices().get(i).getOrderedService().getServiceId()
+        if (guest.getOrderedServices().get(i).getOrderedService().getId()
             == serviceNumberToAdd) {
           guest.getOrderedServices().get(i).setCountOfOrderingService(
               guest.getOrderedServices().get(i).getCountOfOrderingService() + 1);
@@ -121,16 +121,16 @@ public class GuestService {
     Guest tempGuest = null;
     for (int i = 0; i < informationToProcessing.getRoomsDao().getRoomsList().size(); i++) {
       if (!informationToProcessing.getRoomsDao().getRoomsList().get(i)
-          .getRoomCurrentGuest()
+          .getCurrentGuest()
           .isEmpty()) {
         for (int j = 0;
             j < informationToProcessing.getRoomsDao().getRoomsList().get(i)
-                .getRoomCurrentGuest().size();
+                .getCurrentGuest().size();
             j++) {
-          if (informationToProcessing.getRoomsDao().getRoomsList().get(i).getRoomCurrentGuest()
-              .get(j).getGuestName().toLowerCase().equals(guestName.toLowerCase())) {
+          if (informationToProcessing.getRoomsDao().getRoomsList().get(i).getCurrentGuest()
+              .get(j).getName().toLowerCase().equals(guestName.toLowerCase())) {
             tempGuest = informationToProcessing.getRoomsDao().getRoomsList().get(i)
-                .getRoomCurrentGuest()
+                .getCurrentGuest()
                 .get(j);
             break;
           }
@@ -144,12 +144,12 @@ public class GuestService {
     Guest tempGuest = null;
     for (int i = 0; i < informationToProcessing.getRoomsDao().getRoomsList().size(); i++) {
       for (int j = 0;
-          j < informationToProcessing.getRoomsDao().getRoomsList().get(i).getRoomCurrentGuest()
+          j < informationToProcessing.getRoomsDao().getRoomsList().get(i).getCurrentGuest()
               .size(); j++) {
-        if (informationToProcessing.getRoomsDao().getRoomsList().get(i).getRoomCurrentGuest()
+        if (informationToProcessing.getRoomsDao().getRoomsList().get(i).getCurrentGuest()
             .get(j).hashCode() == guestHash) {
           tempGuest = informationToProcessing.getRoomsDao().getRoomsList().get(i)
-              .getRoomCurrentGuest().get(j);
+              .getCurrentGuest().get(j);
         }
       }
     }
@@ -157,11 +157,11 @@ public class GuestService {
   }
 
   public void checkInGuest(Room room, Guest[] guest) {
-    if (guest.length <= room.getRoomMaxCapacity()) {
-      room.getRoomCurrentGuest().addAll(Arrays.asList(guest));
+    if (guest.length <= room.getMaxCapacity()) {
+      room.getCurrentGuest().addAll(Arrays.asList(guest));
       room.setFree(false);
     } else {
-      System.out.println("Room " + room.getRoomNumber() + "is full");
+      System.out.println("Room " + room.getNumber() + "is full");
     }
   }
 
@@ -186,8 +186,8 @@ public class GuestService {
 
   public void checkOutGuests(Hotel hotel, Room room) {
     hotel.getRoomService()
-        .processingArchivedGuests(room, prepareToCheckOut(room.getRoomCurrentGuest()));
-    room.getRoomCurrentGuest().clear();
+        .processingArchivedGuests(room, prepareToCheckOut(room.getCurrentGuest()));
+    room.getCurrentGuest().clear();
     room.setFree(true);
   }
 
@@ -196,13 +196,13 @@ public class GuestService {
     Guest[] tempGuestArray = new Guest[currentRoomGuests.size()];
     for (int i = 0; i < currentRoomGuests.size(); i++) {
       tempGuest = new Guest();
-      tempGuest.setGuestPassportNumber(currentRoomGuests.get(i).getGuestPassportNumber());
-      tempGuest.setGuestDebt(currentRoomGuests.get(i).getGuestDebt());
-      tempGuest.setGuestName(currentRoomGuests.get(i).getGuestName());
-      tempGuest.setGuestDurationOfStay(currentRoomGuests.get(i).getGuestDurationOfStay());
+      tempGuest.setPassportNumber(currentRoomGuests.get(i).getPassportNumber());
+      tempGuest.setDebt(currentRoomGuests.get(i).getDebt());
+      tempGuest.setName(currentRoomGuests.get(i).getName());
+      tempGuest.setDurationOfStay(currentRoomGuests.get(i).getDurationOfStay());
       tempGuest.setOrderedServices(currentRoomGuests.get(i).getOrderedServices());
-      tempGuest.setGuestCheckOutDate(currentRoomGuests.get(i).getGuestCheckOutDate());
-      tempGuest.setGuestCheckInDate(currentRoomGuests.get(i).getGuestCheckInDate());
+      tempGuest.setCheckOutDate(currentRoomGuests.get(i).getCheckOutDate());
+      tempGuest.setCheckInDate(currentRoomGuests.get(i).getCheckInDate());
       tempGuestArray[i] = tempGuest;
     }
     return tempGuestArray;

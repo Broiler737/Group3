@@ -108,7 +108,7 @@ public class PrintInformation {
     System.out.println();
     hotelInformationToPrint.getPrintInformation().getPrintServices()
         .printGuestServicesByPriceAscending(hotelInformationToPrint,
-            hotelInformationToPrint.getRoomsDao().getRoomsList().get(7).getRoomCurrentGuest()
+            hotelInformationToPrint.getRoomsDao().getRoomsList().get(7).getCurrentGuest()
                 .get(0));
     System.out.println();
     hotelInformationToPrint.getPrintInformation().getPrintServices()
@@ -116,7 +116,7 @@ public class PrintInformation {
     System.out.println();
     hotelInformationToPrint.getPrintInformation().getPrintServices()
         .printGuestServicesByPriceDescending(hotelInformationToPrint,
-            hotelInformationToPrint.getRoomsDao().getRoomsList().get(5).getRoomCurrentGuest()
+            hotelInformationToPrint.getRoomsDao().getRoomsList().get(5).getCurrentGuest()
                 .get(1));
     hotelInformationToPrint.getPrintInformation().getPrintServices()
         .printServicesByNameAscending(hotelInformationToPrint);

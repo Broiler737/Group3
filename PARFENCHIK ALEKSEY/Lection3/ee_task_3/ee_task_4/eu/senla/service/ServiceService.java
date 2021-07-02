@@ -24,8 +24,8 @@ public class ServiceService {
   public void addService(Hotel hotel, String serviceName, Double servicePrice, String serviceType,
       Boolean perDay) {
     Service serviceToAdd = new Service(serviceName, servicePrice, serviceType, perDay);
-    serviceToAdd.setServiceId(countServiceId(hotel.getServicesDao().getServicesList().size()));
-    hotel.getServicesDao().getServicesList().put(serviceToAdd.getServiceId(), serviceToAdd);
+    serviceToAdd.setId(countServiceId(hotel.getServicesDao().getServicesList().size()));
+    hotel.getServicesDao().getServicesList().put(serviceToAdd.getId(), serviceToAdd);
   }
 
   public Service[] prepareCurrentServices(TreeMap<Integer, Service> services) {
@@ -49,8 +49,8 @@ public class ServiceService {
     Service tempService = null;
     Service[] tempServiceArray = prepareCurrentServices(hotel.getServicesDao().getServicesList());
     for (Service service : tempServiceArray) {
-      if (service.getServiceName().toLowerCase().equals(serviceName.toLowerCase()) && service
-          .isAvailable()) {
+      if (service.getName().toLowerCase().equals(serviceName.toLowerCase()) /*&& service
+          .isAvailable()*/) {
         tempService = service;
         break;
       }
@@ -62,7 +62,7 @@ public class ServiceService {
     Service tempService = null;
     Service[] tempServiceArray = prepareCurrentServices(hotel.getServicesDao().getServicesList());
     for (Service service : tempServiceArray) {
-      if (service.getServiceName().toLowerCase().equals(serviceName.toLowerCase())) {
+      if (service.getName().toLowerCase().equals(serviceName.toLowerCase())) {
         tempService = service;
         break;
       }
@@ -72,25 +72,25 @@ public class ServiceService {
 
   public void changeServicePrice(Hotel hotel, String serviceName, Double servicePrice) {
     hotel.getServiceService().selectServiceByName(hotel, serviceName)
-        .setServicePrice(servicePrice);
+        .setPrice(servicePrice);
     System.out.println("Now " + serviceName + " price is " + servicePrice + "$");
   }
 
-  public void changeServiceAvailability(Hotel hotel, String serviceName) {
+  /*public void changeServiceAvailability(Hotel hotel, String serviceName) {
     hotel.getServiceService().selectServiceByName(hotel, serviceName).setAvailable(
         !hotel.getServiceService().selectServiceByName(hotel, serviceName).isAvailable());
     if (hotel.getServiceService().selectServiceByName(hotel, serviceName).isAvailable()) {
       System.out.println(
           "Now service " + hotel.getServiceService().selectServiceByName(hotel, serviceName)
-              .getServiceName()
+              .getName()
               + " is available");
     } else {
       System.out.println(
           "Now service " + hotel.getServiceService().selectServiceByName(hotel, serviceName)
-              .getServiceName()
+              .getName()
               + " is not available");
     }
-  }
+  }*/
 
   public static class OrderedService {
 

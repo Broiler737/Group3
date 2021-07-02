@@ -14,11 +14,11 @@ public class PrintRooms {
 
   public void printRoomDetails(Hotel hotelInformationToPrint, Room room) {
     System.out.println();
-    System.out.println("########## Room #" + room.getRoomNumber() + " details ##########");
-    System.out.println("Room Number #" + room.getRoomNumber());
-    System.out.println("The room has " + room.getRoomRating() + "-star rating");
-    System.out.println("Maximum guests in room is " + room.getRoomMaxCapacity() + " guests");
-    System.out.println("Price per night in this room is " + room.getRoomPrice() + "$");
+    System.out.println("########## Room #" + room.getNumber() + " details ##########");
+    System.out.println("Room Number #" + room.getNumber());
+    System.out.println("The room has " + room.getRating() + "-star rating");
+    System.out.println("Maximum guests in room is " + room.getMaxCapacity() + " guests");
+    System.out.println("Price per night in this room is " + room.getPrice() + "$");
     System.out.println("Is this room in service? - " + room.isInService());
     System.out.println("Is this room free? - " + room.isFree());
     System.out.println("These guests were lived in  in this room before:");
