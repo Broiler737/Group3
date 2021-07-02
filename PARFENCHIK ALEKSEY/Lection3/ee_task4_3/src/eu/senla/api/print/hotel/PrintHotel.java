@@ -1,31 +1,34 @@
 package eu.senla.api.print.hotel;
 
-import eu.senla.model.hotel.Hotel;
+import eu.senla.api.print.PrintInformation;
 import eu.senla.model.room.Room;
+import eu.senla.service.GuestService;
+import eu.senla.service.RoomService;
 import java.time.LocalDate;
+import java.util.List;
 
 public class PrintHotel {
 
-  public void printCountOfFreeRoomsInHotel(Hotel hotel) {
-    int countOfFreeRooms = hotel.getRoomService().getFreeRooms(hotel);
+  public void printCountOfFreeRoomsInHotel(List<Room> roomList, RoomService roomService) {
+    int countOfFreeRooms = roomService.getFreeRooms(roomList);
     System.out.println("At this moment " + countOfFreeRooms + " free rooms in hotel");
   }
 
-  public void printCountOfHotelGuests(Hotel informationToProcessing) {
+  public void printCountOfHotelGuests(List<Room> roomList, GuestService guestService) {
     int counter;
-    counter = informationToProcessing.getGuestService()
-        .getCountOfRegisteredGuests(informationToProcessing);
+    counter = guestService.getCountOfRegisteredGuests(roomList);
     System.out
         .println("In hotel has been registered and living " + counter + " guests at this moment");
   }
 
-  public void printListOfFreeInFutureRoomsInHotel(Hotel hotel, LocalDate dateToCheck) {
-    Room[] tempRoomArray = hotel.getRoomService().getFreeInFutureRooms(hotel, dateToCheck);
+  public void printListOfFreeInFutureRoomsInHotel(PrintInformation printInformation,
+      List<Room> roomList, RoomService roomService, LocalDate dateToCheck) {
+    Room[] tempRoomArray = roomService.getFreeInFutureRooms(roomList, dateToCheck);
     System.out.println(
         "At " + dateToCheck + " in hotel, will be free these rooms:");
     for (Room roomToPrint : tempRoomArray
     ) {
-      hotel.printInformation.getPrintRooms().printRoomDetails(hotel, roomToPrint);
+      printInformation.getPrintRooms().printRoomDetails(printInformation, roomToPrint);
     }
   }
 }

@@ -2,16 +2,15 @@ package eu.senla.service;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-import eu.senla.model.hotel.Hotel;
 import eu.senla.model.service.Service;
 import java.time.LocalDate;
 import java.util.TreeMap;
 
 public class ServiceService {
 
-  //private final ServicesDao servicesDao;
+  /*private final ServicesDao servicesDao;
 
-  /*public ServiceService(ServicesDao servicesDao) {
+  public ServiceService(ServicesDao servicesDao) {
     this.servicesDao = servicesDao;
   }*/
 
@@ -21,11 +20,11 @@ public class ServiceService {
     return tempServiceId;
   }
 
-  public void addService(Hotel hotel, String serviceName, Double servicePrice, String serviceType,
-      Boolean perDay) {
+  public void addService(TreeMap<Integer, Service> serviceList, String serviceName,
+      Double servicePrice, String serviceType, Boolean perDay) {
     Service serviceToAdd = new Service(serviceName, servicePrice, serviceType, perDay);
-    serviceToAdd.setServiceId(countServiceId(hotel.getServicesDao().getServicesList().size()));
-    hotel.getServicesDao().getServicesList().put(serviceToAdd.getServiceId(), serviceToAdd);
+    serviceToAdd.setId(countServiceId(serviceList.size()));
+    serviceList.put(serviceToAdd.getId(), serviceToAdd);
   }
 
   public Service[] prepareCurrentServices(TreeMap<Integer, Service> services) {
@@ -36,21 +35,21 @@ public class ServiceService {
     return tempServiceArray;
   }
 
-  public Service selectServiceByCounter(Hotel hotel, int serviceCounter) {
+  public Service selectServiceByCounter(TreeMap<Integer, Service> serviceList, int serviceCounter) {
     Service tempService = null;
-
-    if (hotel.getServicesDao().getServicesList().containsKey(countServiceId(serviceCounter))) {
-      tempService = hotel.getServicesDao().getServicesList().get(countServiceId(serviceCounter));
+    if (serviceList.containsKey(countServiceId(serviceCounter))) {
+      tempService = serviceList.get(countServiceId(serviceCounter));
     }
     return tempService;
   }
 
-  public Service selectAvailableServiceByName(Hotel hotel, String serviceName) {
+  public Service selectAvailableServiceByName(TreeMap<Integer, Service> serviceList,
+      String serviceName) {
     Service tempService = null;
-    Service[] tempServiceArray = prepareCurrentServices(hotel.getServicesDao().getServicesList());
+    Service[] tempServiceArray = prepareCurrentServices(serviceList);
     for (Service service : tempServiceArray) {
-      if (service.getServiceName().toLowerCase().equals(serviceName.toLowerCase()) && service
-          .isAvailable()) {
+      if (service.getName().toLowerCase().equals(serviceName.toLowerCase()) /*&& service
+          .isAvailable()*/) {
         tempService = service;
         break;
       }
@@ -58,11 +57,11 @@ public class ServiceService {
     return tempService;
   }
 
-  public Service selectServiceByName(Hotel hotel, String serviceName) {
+  public Service selectServiceByName(TreeMap<Integer, Service> serviceList, String serviceName) {
     Service tempService = null;
-    Service[] tempServiceArray = prepareCurrentServices(hotel.getServicesDao().getServicesList());
+    Service[] tempServiceArray = prepareCurrentServices(serviceList);
     for (Service service : tempServiceArray) {
-      if (service.getServiceName().toLowerCase().equals(serviceName.toLowerCase())) {
+      if (service.getName().toLowerCase().equals(serviceName.toLowerCase())) {
         tempService = service;
         break;
       }
@@ -70,27 +69,28 @@ public class ServiceService {
     return tempService;
   }
 
-  public void changeServicePrice(Hotel hotel, String serviceName, Double servicePrice) {
-    hotel.getServiceService().selectServiceByName(hotel, serviceName)
-        .setServicePrice(servicePrice);
+  public void changeServicePrice(TreeMap<Integer, Service> serviceList,
+      ServiceService serviceService, String serviceName, Double servicePrice) {
+    serviceService.selectServiceByName(serviceList, serviceName)
+        .setPrice(servicePrice);
     System.out.println("Now " + serviceName + " price is " + servicePrice + "$");
   }
 
-  public void changeServiceAvailability(Hotel hotel, String serviceName) {
+  /*public void changeServiceAvailability(Hotel hotel, String serviceName) {
     hotel.getServiceService().selectServiceByName(hotel, serviceName).setAvailable(
         !hotel.getServiceService().selectServiceByName(hotel, serviceName).isAvailable());
     if (hotel.getServiceService().selectServiceByName(hotel, serviceName).isAvailable()) {
       System.out.println(
           "Now service " + hotel.getServiceService().selectServiceByName(hotel, serviceName)
-              .getServiceName()
+              .getName()
               + " is available");
     } else {
       System.out.println(
           "Now service " + hotel.getServiceService().selectServiceByName(hotel, serviceName)
-              .getServiceName()
+              .getName()
               + " is not available");
     }
-  }
+  }*/
 
   public static class OrderedService {
 
@@ -100,10 +100,9 @@ public class ServiceService {
     int durationOfUseService;
     int countOfOrderingService;
 
-    public OrderedService(Hotel informationToProcessing, String serviceName,
-        LocalDate dateOfOrderingService, LocalDate dateOfEndingUseService) {
-      Service tempService = informationToProcessing.getServiceService()
-          .selectAvailableServiceByName(informationToProcessing, serviceName);
+    public OrderedService(TreeMap<Integer, Service> serviceList, ServiceService serviceService,
+        String serviceName, LocalDate dateOfOrderingService, LocalDate dateOfEndingUseService) {
+      Service tempService = serviceService.selectAvailableServiceByName(serviceList, serviceName);
       this.orderedService = tempService;
       this.dateOfOrderingService = dateOfOrderingService;
       this.dateOfEndingUseService = dateOfEndingUseService;
@@ -117,10 +116,9 @@ public class ServiceService {
       }
     }
 
-    public OrderedService(Hotel informationToProcessing, int serviceNumber,
-        LocalDate dateOfOrderingService, LocalDate dateOfEndingUseService) {
-      this.orderedService = informationToProcessing.getServiceService()
-          .selectServiceByCounter(informationToProcessing, serviceNumber);
+    public OrderedService(TreeMap<Integer, Service> serviceList, ServiceService serviceService,
+        int serviceNumber, LocalDate dateOfOrderingService, LocalDate dateOfEndingUseService) {
+      this.orderedService = serviceService.selectServiceByCounter(serviceList, serviceNumber);
       this.dateOfOrderingService = dateOfOrderingService;
       this.dateOfEndingUseService = dateOfEndingUseService;
       this.durationOfUseService = (int) DAYS.between(dateOfOrderingService, dateOfEndingUseService);

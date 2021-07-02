@@ -4,8 +4,15 @@ import eu.senla.api.print.guest.PrintGuests;
 import eu.senla.api.print.hotel.PrintHotel;
 import eu.senla.api.print.room.PrintRooms;
 import eu.senla.api.print.service.PrintServices;
-import eu.senla.model.hotel.Hotel;
+import eu.senla.model.guest.Guest;
+import eu.senla.model.room.Room;
+import eu.senla.model.service.Service;
+import eu.senla.service.GuestService;
+import eu.senla.service.RoomService;
+import eu.senla.service.ServiceService;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.TreeMap;
 
 public class PrintInformation {
 
@@ -17,123 +24,91 @@ public class PrintInformation {
   public PrintInformation() {
   }
 
-  public void printInformation(Hotel hotelInformationToPrint) {
+  public void printInformation(RoomService roomService, List<Room> roomList,
+      GuestService guestService, List<Guest> guestList,
+      ServiceService serviceService,
+      TreeMap<Integer, Service> servicesList) {
     //Simple test of work classes and methods
     System.out.println("Print results of check-out guests");
-    hotelInformationToPrint.getPrintInformation().getPrintGuests()
-        .printAllHotelGuestsByRoomNumber(hotelInformationToPrint);
+    printGuests.printAllHotelGuestsByRoomNumber(this, roomList, roomService, guestService);
     System.out.println();
     System.out.println("Print list of hotel rooms by price");
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelRoomsByPriceAscending(hotelInformationToPrint);
+    printRooms.printHotelRoomsByPriceAscending(this, roomList);
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelRoomsByPriceDescending(hotelInformationToPrint);
+    printRooms.printHotelRoomsByPriceDescending(this, roomList);
     System.out.println();
     System.out.println("Print list of hotel rooms by capacity");
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelRoomsByCapacityAscending(hotelInformationToPrint);
+    printRooms.printHotelRoomsByCapacityAscending(this, roomList);
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelRoomsByCapacityDescending(hotelInformationToPrint);
+    printRooms.printHotelRoomsByCapacityDescending(this, roomList);
     System.out.println();
     System.out.println("Print list of hotel rooms by rating");
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelRoomsByRatingAscending(hotelInformationToPrint);
+    printRooms.printHotelRoomsByRatingAscending(this, roomList);
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelRoomsByRatingDescending(hotelInformationToPrint);
+    printRooms.printHotelRoomsByRatingDescending(this, roomList);
     System.out.println();
     System.out.println("Print list of hotel free rooms by price");
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelFreeRoomsByPriceAscending(hotelInformationToPrint);
+    printRooms.printHotelFreeRoomsByPriceAscending(this, roomList);
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelFreeRoomsByPriceDescending(hotelInformationToPrint);
+    printRooms.printHotelFreeRoomsByPriceDescending(this, roomList);
     System.out.println();
     System.out.println("Print list of hotel free rooms by capacity");
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelFreeRoomsByCapacityAscending(hotelInformationToPrint);
+    printRooms.printHotelFreeRoomsByCapacityAscending(this, roomList);
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelFreeRoomsByCapacityDescending(hotelInformationToPrint);
+    printRooms.printHotelFreeRoomsByCapacityDescending(this, roomList);
     System.out.println();
     System.out.println("Print list of hotel free rooms by rating");
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelFreeRoomsByRatingAscending(hotelInformationToPrint);
+    printRooms.printHotelFreeRoomsByRatingAscending(this, roomList);
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintRooms()
-        .printHotelFreeRoomsByRatingDescending(hotelInformationToPrint);
+    printRooms.printHotelFreeRoomsByRatingDescending(this, roomList);
     System.out.println();
     System.out.println("printGuestsByName");
-    hotelInformationToPrint.getPrintInformation().getPrintGuests()
-        .printGuestsByNameAscending(hotelInformationToPrint);
+    printGuests.printGuestsByNameAscending(this, roomList, roomService, guestList, guestService);
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintGuests()
-        .printGuestsByNameDescending(hotelInformationToPrint);
+    printGuests.printGuestsByNameDescending(this, roomList, roomService, guestList, guestService);
     System.out.println();
     System.out.println("printGuestsByCheckOutDate");
-    hotelInformationToPrint.getPrintInformation().getPrintGuests()
-        .printGuestsByCheckOutDateAscending(hotelInformationToPrint);
+    printGuests
+        .printGuestsByCheckOutDateAscending(this, roomList, roomService, guestList, guestService);
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintGuests()
-        .printGuestsByCheckOutDateDescending(hotelInformationToPrint);
+    printGuests
+        .printGuestsByCheckOutDateDescending(this, roomList, roomService, guestList, guestService);
     System.out.println();
     System.out.println("Count of free rooms in hotel");
-    printHotel.printCountOfFreeRoomsInHotel(hotelInformationToPrint);
+    printHotel.printCountOfFreeRoomsInHotel(roomList, roomService);
     System.out.println();
     System.out.println("Count of registered guests in hotel");
-    hotelInformationToPrint.getPrintInformation().getPrintHotel()
-        .printCountOfHotelGuests(hotelInformationToPrint);
+    printHotel.printCountOfHotelGuests(roomList, guestService);
     System.out.println();
     System.out.println("PrintListOfFreeInFutureRoomsInHotel");
-    hotelInformationToPrint.getPrintInformation().getPrintHotel()
-        .printListOfFreeInFutureRoomsInHotel(hotelInformationToPrint, LocalDate.of(2021,
-            7, 19));
+    printHotel.printListOfFreeInFutureRoomsInHotel(this, roomList, roomService,
+        LocalDate.of(2021, 7, 19));
     System.out.println();
     System.out.println("printGuestCard and debt");
-    printGuests.printGuestCard(hotelInformationToPrint,
-        hotelInformationToPrint.getGuestService()
-            .selectGuestByName(hotelInformationToPrint, "Mike"));
+    printGuests.printGuestCard(this, roomList, roomService, guestService, guestService
+        .selectGuestByName(roomList, "Mike"));
     System.out.println();
     System.out.println("printGuestServicesByNameAscending");
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printGuestServicesByNameDescending(hotelInformationToPrint,
-            hotelInformationToPrint.getGuestService()
-                .selectGuestByName(hotelInformationToPrint, "Nick").hashCode());
+    printServices.printGuestServicesByNameDescending(guestService, roomList,
+        guestService.selectGuestByName(roomList, "Nick").hashCode());
     System.out.println();
     System.out.println("printGuestServicesByPriceAscending");
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printGuestByNameServicesByPriceAscending(hotelInformationToPrint, "Monica");
+    printServices.printGuestByNameServicesByPriceAscending(guestService, roomList, "Monica");
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printGuestServicesByPriceAscending(hotelInformationToPrint,
-            hotelInformationToPrint.getRoomsDao().getRoomsList().get(7).getRoomCurrentGuest()
-                .get(0));
+    printServices.printGuestServicesByPriceAscending(roomList.get(7).getCurrentGuest().get(0));
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printGuestByNameServicesByPriceDescending(hotelInformationToPrint, "Margaret");
+    printServices.printGuestByNameServicesByPriceDescending(guestService, roomList, "Margaret");
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printGuestServicesByPriceDescending(hotelInformationToPrint,
-            hotelInformationToPrint.getRoomsDao().getRoomsList().get(5).getRoomCurrentGuest()
-                .get(1));
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printServicesByNameAscending(hotelInformationToPrint);
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printServicesByNameDescending(hotelInformationToPrint);
+    printServices.printGuestServicesByPriceDescending(roomList.get(5).getCurrentGuest().get(1));
+    printServices.printServicesByNameAscending(serviceService, servicesList);
+    printServices.printServicesByNameDescending(serviceService, servicesList);
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printServicesByPriceAscending(hotelInformationToPrint);
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printServicesByPriceDescending(hotelInformationToPrint);
+    printServices.printServicesByPriceAscending(serviceService, servicesList);
+    printServices.printServicesByPriceDescending(serviceService, servicesList);
     System.out.println();
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printServicesByTypeAscending(hotelInformationToPrint);
-    hotelInformationToPrint.getPrintInformation().getPrintServices()
-        .printServicesByTypeDescending(hotelInformationToPrint);
-    printRooms.printRoomDetails(hotelInformationToPrint,
-        hotelInformationToPrint.getRoomService().findRoomByNumber(hotelInformationToPrint, 2));
+    printServices.printServicesByTypeAscending(serviceService, servicesList);
+    printServices.printServicesByTypeDescending(serviceService, servicesList);
+    printRooms.printRoomDetails(this, roomService.findRoomByNumber(roomList, 2));
   }
 
   public PrintServices getPrintServices() {

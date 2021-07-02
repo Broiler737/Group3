@@ -1,48 +1,41 @@
 package eu.senla.service;
 
-import eu.senla.dao.RoomsDao;
 import eu.senla.model.guest.Guest;
-import eu.senla.model.hotel.Hotel;
 import eu.senla.model.room.Room;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RoomService {
 
-  public void addRoom(Hotel hotel, int roomNumber, int roomMaxCapacity, int roomRating,
+  public void addRoom(List<Room> roomList, int roomNumber, int roomMaxCapacity, int roomRating,
       double roomPrice) {
-    hotel.getRoomsDao().getRoomsList()
-        .add(new Room(roomNumber, roomMaxCapacity, roomRating, roomPrice));
+    roomList.add(new Room(roomNumber, roomMaxCapacity, roomRating, roomPrice));
   }
 
-  public Room[] getFreeInFutureRooms(Hotel informationToProcessing, LocalDate dateToCheck) {
+  public Room[] getFreeInFutureRooms(List<Room> roomList, LocalDate dateToCheck) {
     Room[] listOfFreeInFutureRooms;
     ArrayList<Room> tempListOfFreeInFutureRooms = new ArrayList<>(0);
-    for (int i = 0; i < informationToProcessing.getRoomsDao().getRoomsList().size(); i++) {
+    for (int i = 0; i < roomList.size(); i++) {
       boolean isAllGuestCheckOut = false;
       for (int j = 0;
-          j < informationToProcessing.getRoomsDao().getRoomsList().get(i).getRoomCurrentGuest()
-              .size();
-          j++) {
-        isAllGuestCheckOut = informationToProcessing.getRoomsDao().getRoomsList().get(i)
-            .getRoomCurrentGuest().get(j)
-            .getGuestCheckOutDate()
+          j < roomList.get(i).getCurrentGuest().size(); j++) {
+        isAllGuestCheckOut = roomList.get(i).getCurrentGuest().get(j).getCheckOutDate()
             .isBefore(dateToCheck);
       }
       if (isAllGuestCheckOut) {
-        tempListOfFreeInFutureRooms
-            .add(informationToProcessing.getRoomsDao().getRoomsList().get(i));
+        tempListOfFreeInFutureRooms.add(roomList.get(i));
       }
     }
     listOfFreeInFutureRooms = tempListOfFreeInFutureRooms.toArray(new Room[]{});
     return listOfFreeInFutureRooms;
   }
 
-  public int getFreeRooms(Hotel hotel) {
+  public int getFreeRooms(List<Room> roomList) {
     int numberOfFreeRooms = 0;
-    Room[] tempHotelRoom = new Room[hotel.getRoomsDao().getRoomsList().size()];
-    for (int i = 0; i < hotel.getRoomsDao().getRoomsList().size(); i++) {
-      tempHotelRoom[i] = hotel.getRoomsDao().getRoomsList().get(i);
+    Room[] tempHotelRoom = new Room[roomList.size()];
+    for (int i = 0; i < roomList.size(); i++) {
+      tempHotelRoom[i] = roomList.get(i);
     }
     for (Room roomToCount : tempHotelRoom
     ) {
@@ -53,10 +46,10 @@ public class RoomService {
     return numberOfFreeRooms;
   }
 
-  public Room findRoomByNumber(Hotel hotel, int roomNumber) {
+  public Room findRoomByNumber(List<Room> roomList, int roomNumber) {
     Room tempRoom = null;
-    for (Room hotelRoom : hotel.getRoomsDao().getRoomsList()) {
-      if (hotelRoom.getRoomNumber() == roomNumber) {
+    for (Room hotelRoom : roomList) {
+      if (hotelRoom.getNumber() == roomNumber) {
         tempRoom = hotelRoom;
       }
     }
@@ -64,47 +57,47 @@ public class RoomService {
   }
 
   public void changeRoomPrice(Room room, double roomPrice) {
-    room.setRoomPrice(roomPrice);
-    System.out.println("Now room #" + room.getRoomNumber() + " costs " + roomPrice + "$ per night");
+    room.setPrice(roomPrice);
+    System.out.println("Now room #" + room.getNumber() + " costs " + roomPrice + "$ per night");
   }
 
   public void changeRoomState(Room room) {
     room.setInService();
     if (room.isInService()) {
-      System.out.println("Now room #" + room.getRoomNumber() + " is in service");
+      System.out.println("Now room #" + room.getNumber() + " is in service");
     } else {
-      System.out.println("Now room #" + room.getRoomNumber() + " is out of service");
+      System.out.println("Now room #" + room.getNumber() + " is out of service");
     }
   }
 
   public final void changeRoomRating(Room room, int newRating) {
-    room.setRoomRating(newRating);
+    room.setRating(newRating);
   }
 
   public final void changeRoomCapacity(Room room, int newCapacity) {
-    room.setRoomMaxCapacity(newCapacity);
+    room.setMaxCapacity(newCapacity);
   }
 
   public void processingArchivedGuests(Room roomToCheckOut, Guest[] currentRoomGuest) {
     Guest[][] tempArchivedGuest = new Guest[Room.getHistoryDepth()
-        + 1][roomToCheckOut.getRoomMaxCapacity()];
-    for (int i = 0; i < roomToCheckOut.getRoomArchivedGuest().length; i++) {
-      if (roomToCheckOut.getRoomArchivedGuest()[i] != null) {
-        tempArchivedGuest[i + 1] = roomToCheckOut.getRoomArchivedGuest()[i];
+        + 1][roomToCheckOut.getMaxCapacity()];
+    for (int i = 0; i < roomToCheckOut.getArchivedGuest().length; i++) {
+      if (roomToCheckOut.getArchivedGuest()[i] != null) {
+        tempArchivedGuest[i + 1] = roomToCheckOut.getArchivedGuest()[i];
       }
     }
     tempArchivedGuest[0] = currentRoomGuest;
     System.out.println();
-    for (int i = 0; i < roomToCheckOut.getRoomArchivedGuest().length; i++) {
-      roomToCheckOut.getRoomArchivedGuest()[i] = tempArchivedGuest[i];
+    for (int i = 0; i < roomToCheckOut.getArchivedGuest().length; i++) {
+      roomToCheckOut.getArchivedGuest()[i] = tempArchivedGuest[i];
     }
   }
 
-  public Room selectRoomByNumber(RoomsDao roomsDao, int roomNumber) {
+  public Room selectRoomByNumber(List<Room> roomList, int roomNumber) {
     Room tempRoom = null;
-    for (Room rooms : roomsDao.getRoomsList()
+    for (Room rooms : roomList
     ) {
-      if (rooms.getRoomNumber() == roomNumber) {
+      if (rooms.getNumber() == roomNumber) {
         tempRoom = rooms;
         break;
       }
@@ -112,31 +105,31 @@ public class RoomService {
     return tempRoom;
   }
 
-  public Room selectSuitableRoom(RoomsDao roomsDao, int countOfGuests, int roomRating) {
+  public Room selectSuitableRoom(List<Room> roomList, int countOfGuests, int roomRating) {
     try {
       Room tempRoom = null;
-      Room[] tempHotelRoom = new Room[roomsDao.getRoomsList().size()];
-      for (int i = 0; i < roomsDao.getRoomsList().size(); i++) {
-        tempHotelRoom[i] = roomsDao.getRoomsList().get(i);
+      Room[] tempHotelRoom = new Room[roomList.size()];
+      for (int i = 0; i < roomList.size(); i++) {
+        tempHotelRoom[i] = roomList.get(i);
       }
       for (Room room : tempHotelRoom) {
-        if ((room.getRoomMaxCapacity() >= countOfGuests) && (room.isInService())
-            && (room.isFree()) && (room.getRoomRating() >= roomRating)) {
+        if ((room.getMaxCapacity() >= countOfGuests) && (room.isInService())
+            && (room.isFree()) && (room.getRating() >= roomRating)) {
           tempRoom = room;
           System.out.println();
           System.out.println("The suitable room was found");
           break;
         } else {
-          if ((room.getRoomMaxCapacity() < countOfGuests)) {
+          if ((room.getMaxCapacity() < countOfGuests)) {
             System.out.println(
-                "Room #" + room.getRoomNumber() + " has only " + room.getRoomMaxCapacity()
+                "Room #" + room.getNumber() + " has only " + room.getMaxCapacity()
                     + " places. It's not suitable for " + countOfGuests + " guests");
             System.out.println("The system try to found another room");
             System.out.println();
           }
-          if ((room.getRoomRating() < roomRating)) {
+          if ((room.getRating() < roomRating)) {
             System.out.println(
-                "Room #" + room.getRoomNumber() + " has only " + room.getRoomRating()
+                "Room #" + room.getNumber() + " has only " + room.getRating()
                     + "-star rating. It's not suitable for guests, who want to live in "
                     + roomRating
                     + "-star rating room");
@@ -145,14 +138,14 @@ public class RoomService {
           }
           if (!room.isFree()) {
             System.out.println(
-                "Room #" + room.getRoomNumber()
+                "Room #" + room.getNumber()
                     + " is not free. You could't check-in guests inside");
             System.out.println("The system try to found another room");
             System.out.println();
           }
           if (!room.isInService()) {
             System.out.println(
-                "Room #" + room.getRoomNumber()
+                "Room #" + room.getNumber()
                     + " is out-of-service. You could't check-in guests inside");
             System.out.println("The system try to found another room");
             System.out.println();
@@ -166,19 +159,13 @@ public class RoomService {
     }
   }
 
-  public Room findGuestRoom(Hotel informationToProcessing, int guestHash) {
+  public Room findGuestRoom(List<Room> roomList, int guestHash) {
     Room tempRoom = null;
-    for (int i = 0; i < informationToProcessing.getRoomsDao().getRoomsList().size(); i++) {
-      if (!informationToProcessing.getRoomsDao().getRoomsList().get(i)
-          .getRoomCurrentGuest()
-          .isEmpty()) {
-        for (int j = 0;
-            j < informationToProcessing.getRoomsDao().getRoomsList().get(i)
-                .getRoomCurrentGuest().size();
-            j++) {
-          if (informationToProcessing.getRoomsDao().getRoomsList().get(i).getRoomCurrentGuest()
-              .get(j).hashCode() == guestHash) {
-            tempRoom = informationToProcessing.getRoomsDao().getRoomsList().get(i);
+    for (int i = 0; i < roomList.size(); i++) {
+      if (!roomList.get(i).getCurrentGuest().isEmpty()) {
+        for (int j = 0; j < roomList.get(i).getCurrentGuest().size(); j++) {
+          if (roomList.get(i).getCurrentGuest().get(j).hashCode() == guestHash) {
+            tempRoom = roomList.get(i);
             break;
           }
         }

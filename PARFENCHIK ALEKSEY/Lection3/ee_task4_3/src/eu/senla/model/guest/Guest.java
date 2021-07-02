@@ -6,87 +6,87 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Guest {
-    String guestName;
-    String guestPassportNumber;
-    LocalDate guestCheckInDate;
-    LocalDate guestCheckOutDate;
-    int guestDurationOfStay;
-    ArrayList<OrderedService> orderedServices = new ArrayList<>();
-    double guestDebt;
+    private String fullName;
+    private String passportNumber;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+    private int durationOfStay;
+    private ArrayList<OrderedService> orderedServices = new ArrayList<>();
+    private double debt;
 
     public Guest() {
     }
 
-    public Guest(String guestName, String guestPassportNumber, LocalDate guestCheckInDate,
-                 Integer guestDurationOfStay) {
-        setGuestName(guestName);
-        setGuestPassportNumber(guestPassportNumber);
-        setGuestCheckInDate(guestCheckInDate);
-        setGuestDurationOfStay(guestDurationOfStay);
-        setGuestCheckOutDate(getGuestCheckInDate().plusDays(getGuestDurationOfStay()));
+    public Guest(String fullName, String passportNumber, LocalDate checkInDate,
+                 Integer durationOfStay) {
+        setFullName(fullName);
+        setPassportNumber(passportNumber);
+        setCheckInDate(checkInDate);
+        setDurationOfStay(durationOfStay);
+        setCheckOutDate(getCheckInDate().plusDays(getDurationOfStay()));
         setOrderedServices(new ArrayList<>());
     }
 
-    public void setGuestName(String guestName) {
-        this.guestName = guestName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public void setGuestPassportNumber(String guestPassportNumber) {
-        this.guestPassportNumber = guestPassportNumber;
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
     }
 
-    public void setGuestCheckInDate(LocalDate guestCheckInDate) {
-        this.guestCheckInDate = guestCheckInDate;
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
     }
 
-    public void setGuestCheckOutDate(LocalDate guestCheckOutDate) {
-        this.guestCheckOutDate = guestCheckOutDate;
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
     }
 
-    public void setGuestDurationOfStay(int guestDurationOfStay) {
-        this.guestDurationOfStay = guestDurationOfStay;
+    public void setDurationOfStay(int durationOfStay) {
+        this.durationOfStay = durationOfStay;
     }
 
     public void setOrderedServices(ArrayList<OrderedService> orderedServices) {
         this.orderedServices = orderedServices;
     }
 
-    public final void setGuestDebt(double guestDebt) {
-        this.guestDebt = guestDebt;
+    public final void setDebt(double debt) {
+        this.debt = debt;
     }
-    public String getGuestName() {
-        return guestName;
-    }
-
-    public String getGuestPassportNumber() {
-        return guestPassportNumber;
+    public String getFullName() {
+        return fullName;
     }
 
-    public LocalDate getGuestCheckInDate() {
-        return guestCheckInDate;
+    public String getPassportNumber() {
+        return passportNumber;
     }
 
-    public LocalDate getGuestCheckOutDate() {
-        return guestCheckOutDate;
+    public LocalDate getCheckInDate() {
+        return checkInDate;
     }
 
-    public int getGuestDurationOfStay() {
-        return guestDurationOfStay;
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public int getDurationOfStay() {
+        return durationOfStay;
     }
 
     public ArrayList<OrderedService> getOrderedServices() {
         return orderedServices;
     }
 
-    public double getGuestDebt() {
-        return guestDebt;
+    public double getDebt() {
+        return debt;
     }
 
 
 
     @Override
     public int hashCode() {
-        return Objects.hash(guestName, guestPassportNumber, guestCheckInDate, guestDurationOfStay);
+        return Objects.hash(fullName, passportNumber, checkInDate, durationOfStay);
     }
 
 }

@@ -7,6 +7,6 @@ public class ComparatorGuestByNameAscending implements Comparator<Guest> {
 
   @Override
   public int compare(Guest o1, Guest o2) {
-    return o1.getGuestName().compareTo(o2.getGuestName());
+    return o1.getFullName().compareTo(o2.getFullName());
   }
 }

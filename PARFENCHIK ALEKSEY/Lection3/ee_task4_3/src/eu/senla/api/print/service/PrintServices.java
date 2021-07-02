@@ -1,8 +1,10 @@
 package eu.senla.api.print.service;
 
 import eu.senla.model.guest.Guest;
-import eu.senla.model.hotel.Hotel;
+import eu.senla.model.room.Room;
 import eu.senla.model.service.Service;
+import eu.senla.service.GuestService;
+import eu.senla.service.ServiceService;
 import eu.senla.service.ServiceService.OrderedService;
 import eu.senla.utils.comparator.service.ComparatorOrderedServiceByNameAscending;
 import eu.senla.utils.comparator.service.ComparatorOrderedServiceByPriceAscending;
@@ -12,42 +14,44 @@ import eu.senla.utils.comparator.service.ComparatorServiceByPriceAscending;
 import eu.senla.utils.comparator.service.ComparatorServiceByPriceDescending;
 import eu.senla.utils.comparator.service.ComparatorServiceByTypeAscending;
 import java.util.Arrays;
+import java.util.List;
+import java.util.TreeMap;
 
 public class PrintServices {
 
   public void printServiceDetails(Service service) {
-    System.out.println("    Service ID " + service.getServiceId());
-    System.out.println("    Service name: " + service.getServiceName());
-    System.out.println("    Service type: " + service.getServiceType());
+    System.out.println("    Service ID " + service.getId());
+    System.out.println("    Service name: " + service.getName());
+    System.out.println("    Service type: " + service.getType());
     if (service.isPerDay()) {
-      System.out.println("    Service price is " + service.getServicePrice() + "S per day");
+      System.out.println("    Service price is " + service.getPrice() + "S per day");
     } else {
-      System.out.println("    Service price is " + service.getServicePrice() + "S one time");
+      System.out.println("    Service price is " + service.getPrice() + "S one time");
     }
   }
 
   public void printServiceSimple(Service service) {
-    System.out.println("    Service name: " + service.getServiceName());
+    System.out.println("    Service name: " + service.getName());
     if (service.isPerDay()) {
-      System.out.println("    Service price is " + service.getServicePrice() + "S per day");
+      System.out.println("    Service price is " + service.getPrice() + "S per day");
     } else {
-      System.out.println("    Service price is " + service.getServicePrice() + "S one time");
+      System.out.println("    Service price is " + service.getPrice() + "S one time");
     }
   }
 
-  public void printGuestServicesByNameAscending(Hotel hotelInformationToPrint, int guestHash) {
-    Guest guestToPrint = hotelInformationToPrint.getGuestService()
-        .findGuestByHash(hotelInformationToPrint, guestHash);
+  public void printGuestServicesByNameAscending(GuestService guestService, List<Room> roomList,
+      int guestHash) {
+    Guest guestToPrint = guestService
+        .findGuestByHash(roomList, guestHash);
     OrderedService[] tempServicesArrayToPrint = guestToPrint.getOrderedServices().toArray(
         new OrderedService[]{});
     Arrays.sort(tempServicesArrayToPrint, 0, tempServicesArrayToPrint.length,
         new ComparatorOrderedServiceByNameAscending());
     if (!guestToPrint.getOrderedServices().isEmpty()) {
       System.out
-          .println("The guest " + guestToPrint.getGuestName() + " has ordered these services:");
+          .println("The guest " + guestToPrint.getFullName() + " has ordered these services:");
       for (OrderedService orderedService : tempServicesArrayToPrint) {
-        hotelInformationToPrint.printInformation.getPrintServices()
-            .printServiceSimple(orderedService.getOrderedService());
+        printServiceSimple(orderedService.getOrderedService());
         System.out.println(
             "This service guest has ordered " + orderedService.getDateOfOrderingService()
                 + ",");
@@ -69,10 +73,10 @@ public class PrintServices {
     }
   }
 
-  public void printGuestServicesByNameDescending(Hotel hotelInformationToPrint,
+  public void printGuestServicesByNameDescending(GuestService guestService, List<Room> roomList,
       int guestHash) {
-    Guest guestToPrint = hotelInformationToPrint.getGuestService()
-        .findGuestByHash(hotelInformationToPrint, guestHash);
+    Guest guestToPrint = guestService
+        .findGuestByHash(roomList, guestHash);
     OrderedService[] tempServicesArrayToPrint = guestToPrint.getOrderedServices().toArray(
         new OrderedService[]{});
     Arrays.sort(tempServicesArrayToPrint, 0, tempServicesArrayToPrint.length,
@@ -86,10 +90,9 @@ public class PrintServices {
       }
       System.out.println();
       System.out
-          .println("The guest " + guestToPrint.getGuestName() + " has ordered these services:");
+          .println("The guest " + guestToPrint.getFullName() + " has ordered these services:");
       for (OrderedService orderedService : tempServicesToPrintReverseArray) {
-        hotelInformationToPrint.printInformation.getPrintServices()
-            .printServiceSimple(orderedService.getOrderedService());
+        printServiceSimple(orderedService.getOrderedService());
         System.out.println(
             "This service guest has ordered "
                 + orderedService.getDateOfOrderingService()
@@ -114,18 +117,16 @@ public class PrintServices {
     }
   }
 
-  public void printGuestServicesByPriceAscending(Hotel hotelInformationToPrint,
-      Guest guestToPrint) {
+  public void printGuestServicesByPriceAscending(Guest guestToPrint) {
     if (!guestToPrint.getOrderedServices().isEmpty()) {
       OrderedService[] tempServicesArrayToPrint = guestToPrint.getOrderedServices().toArray(
           new OrderedService[]{});
       Arrays.sort(tempServicesArrayToPrint, 0, tempServicesArrayToPrint.length,
           new ComparatorOrderedServiceByPriceAscending());
       System.out
-          .println("The guest " + guestToPrint.getGuestName() + " has ordered these services:");
+          .println("The guest " + guestToPrint.getFullName() + " has ordered these services:");
       for (OrderedService orderedService : tempServicesArrayToPrint) {
-        hotelInformationToPrint.printInformation.getPrintServices()
-            .printServiceSimple(orderedService.getOrderedService());
+        printServiceSimple(orderedService.getOrderedService());
         System.out.println(
             "This service guest has ordered " + orderedService.getDateOfOrderingService()
                 + ",");
@@ -147,18 +148,16 @@ public class PrintServices {
     }
   }
 
-  public void printGuestServicesByPriceDescending(Hotel hotelInformationToPrint,
-      Guest guestToPrint) {
+  public void printGuestServicesByPriceDescending(Guest guestToPrint) {
     if (!guestToPrint.getOrderedServices().isEmpty()) {
       OrderedService[] tempServicesArrayToPrint = guestToPrint.getOrderedServices().toArray(
           new OrderedService[]{});
       Arrays.sort(tempServicesArrayToPrint, 0, tempServicesArrayToPrint.length,
           new ComparatorOrderedServiceByPriceDescending());
       System.out
-          .println("The guest " + guestToPrint.getGuestName() + " has ordered these services:");
+          .println("The guest " + guestToPrint.getFullName() + " has ordered these services:");
       for (OrderedService orderedService : tempServicesArrayToPrint) {
-        hotelInformationToPrint.printInformation.getPrintServices()
-            .printServiceSimple(orderedService.getOrderedService());
+        printServiceSimple(orderedService.getOrderedService());
         System.out.println(
             "This service guest has ordered " + orderedService.getDateOfOrderingService()
                 + ",");
@@ -181,19 +180,18 @@ public class PrintServices {
   }
 
 
-  public void printGuestByNameServicesByPriceAscending(Hotel hotelInformationToPrint,
-      String guestName) {
-    Guest tempGuest = hotelInformationToPrint.getGuestService()
-        .selectGuestByName(hotelInformationToPrint, guestName);
+  public void printGuestByNameServicesByPriceAscending(GuestService guestService,
+      List<Room> roomList, String guestName) {
+    Guest tempGuest = guestService
+        .selectGuestByName(roomList, guestName);
     OrderedService[] tempServicesArrayToPrint = tempGuest.getOrderedServices().toArray(
         new OrderedService[]{});
     Arrays.sort(tempServicesArrayToPrint, 0, tempServicesArrayToPrint.length,
         new ComparatorOrderedServiceByPriceAscending());
     if (!tempGuest.getOrderedServices().isEmpty()) {
-      System.out.println("The guest " + tempGuest.getGuestName() + " has ordered these services:");
+      System.out.println("The guest " + tempGuest.getFullName() + " has ordered these services:");
       for (OrderedService orderedService : tempServicesArrayToPrint) {
-        hotelInformationToPrint.printInformation.getPrintServices()
-            .printServiceSimple(orderedService.getOrderedService());
+        printServiceSimple(orderedService.getOrderedService());
         System.out.println(
             "This service guest has ordered " + orderedService.getDateOfOrderingService()
                 + ",");
@@ -215,19 +213,18 @@ public class PrintServices {
     }
   }
 
-  public void printGuestByNameServicesByPriceDescending(Hotel hotelInformationToPrint,
-      String guestName) {
-    Guest tempGuest = hotelInformationToPrint.getGuestService()
-        .selectGuestByName(hotelInformationToPrint, guestName);
+  public void printGuestByNameServicesByPriceDescending(GuestService guestService,
+      List<Room> roomList, String guestName) {
+    Guest tempGuest = guestService
+        .selectGuestByName(roomList, guestName);
     OrderedService[] tempServicesArrayToPrint = tempGuest.getOrderedServices().toArray(
         new OrderedService[]{});
     Arrays.sort(tempServicesArrayToPrint, 0, tempServicesArrayToPrint.length,
         new ComparatorOrderedServiceByPriceDescending());
     if (!tempGuest.getOrderedServices().isEmpty()) {
-      System.out.println("The guest " + tempGuest.getGuestName() + " has ordered these services:");
+      System.out.println("The guest " + tempGuest.getFullName() + " has ordered these services:");
       for (OrderedService orderedService : tempServicesArrayToPrint) {
-        hotelInformationToPrint.printInformation.getPrintServices()
-            .printServiceSimple(orderedService.getOrderedService());
+        printServiceSimple(orderedService.getOrderedService());
         System.out.println(
             "This service guest has ordered " + orderedService.getDateOfOrderingService()
                 + ",");
@@ -249,74 +246,72 @@ public class PrintServices {
     }
   }
 
-  public void printServicesByNameAscending(Hotel hotelInformationToPrint) {
-    hotelInformationToPrint.getServiceService()
-        .prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
-    Service[] tempServiceArray = hotelInformationToPrint.getServiceService()
-        .prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
+  public void printServicesByNameAscending(ServiceService serviceService,
+      TreeMap<Integer, Service> servicesList) {
+    serviceService
+        .prepareCurrentServices(servicesList);
+    Service[] tempServiceArray = serviceService
+        .prepareCurrentServices(servicesList);
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByNameAscending());
     for (Service sortedService : tempServiceArray) {
-      hotelInformationToPrint.printInformation.getPrintServices()
-          .printServiceDetails(sortedService);
-      System.out.println();
+      printServiceDetails(sortedService);
     }
   }
 
-  public void printServicesByNameDescending(Hotel hotelInformationToPrint) {
-    Service[] tempServiceArray = hotelInformationToPrint.getServiceService()
-        .prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
+  public void printServicesByNameDescending(ServiceService serviceService,
+      TreeMap<Integer, Service> servicesList) {
+    serviceService
+        .prepareCurrentServices(servicesList);
+    Service[] tempServiceArray = serviceService
+        .prepareCurrentServices(servicesList);
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByNameAscending());
+    ;
     for (int i = 0; i < tempServiceArray.length; i++) {
-      hotelInformationToPrint.printInformation.getPrintServices()
-          .printServiceDetails(tempServiceArray[tempServiceArray.length - 1 - i]);
+      printServiceDetails(tempServiceArray[tempServiceArray.length - 1 - i]);
     }
   }
 
-  public void printServicesByPriceAscending(Hotel hotelInformationToPrint) {
-    Service[] tempServiceArray = hotelInformationToPrint.getServiceService()
-        .prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
+  public void printServicesByPriceAscending(ServiceService serviceService,
+      TreeMap<Integer, Service> servicesList) {
+    Service[] tempServiceArray = serviceService
+        .prepareCurrentServices(servicesList);
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByPriceAscending());
     for (Service sortedService : tempServiceArray) {
-      hotelInformationToPrint.printInformation.getPrintServices()
-          .printServiceDetails(sortedService);
-      System.out.println();
+      printServiceDetails(sortedService);
     }
   }
 
-  public void printServicesByPriceDescending(Hotel hotelInformationToPrint) {
-    Service[] tempServiceArray = hotelInformationToPrint.getServiceService()
-        .prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
+  public void printServicesByPriceDescending(ServiceService serviceService,
+      TreeMap<Integer, Service> servicesList) {
+    Service[] tempServiceArray = serviceService
+        .prepareCurrentServices(servicesList);
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByPriceDescending());
     for (Service sortedService : tempServiceArray) {
-      hotelInformationToPrint.printInformation.getPrintServices()
-          .printServiceDetails(sortedService);
-      System.out.println();
+      printServiceDetails(sortedService);
+
     }
   }
 
-  public void printServicesByTypeAscending(Hotel hotelInformationToPrint) {
-    hotelInformationToPrint.getServiceService()
-        .prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
-    Service[] tempServiceArray = hotelInformationToPrint.getServiceService()
-        .prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
+  public void printServicesByTypeAscending(ServiceService serviceService,
+      TreeMap<Integer, Service> servicesList) {
+    Service[] tempServiceArray = serviceService
+        .prepareCurrentServices(servicesList);
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByTypeAscending());
     for (Service sortedService : tempServiceArray) {
-      hotelInformationToPrint.printInformation.getPrintServices()
-          .printServiceDetails(sortedService);
-      System.out.println();
+      printServiceDetails(sortedService);
+
     }
   }
 
-  public void printServicesByTypeDescending(Hotel hotelInformationToPrint) {
-    hotelInformationToPrint.getServiceService()
-        .prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
-    Service[] tempServiceArray = hotelInformationToPrint.getServiceService()
-        .prepareCurrentServices(hotelInformationToPrint.getServicesDao().getServicesList());
+  public void printServicesByTypeDescending(ServiceService serviceService,
+      TreeMap<Integer, Service> servicesList) {
+    Service[] tempServiceArray = serviceService
+        .prepareCurrentServices(servicesList);
     Service[] tempServiceReverseArray = new Service[tempServiceArray.length];
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByTypeAscending());
@@ -324,9 +319,7 @@ public class PrintServices {
       tempServiceReverseArray[i] = tempServiceArray[tempServiceArray.length - 1 - i];
     }
     for (Service sortedService : tempServiceReverseArray) {
-      hotelInformationToPrint.printInformation.getPrintServices()
-          .printServiceDetails(sortedService);
-      System.out.println();
+      printServiceDetails(sortedService);
     }
   }
 }
