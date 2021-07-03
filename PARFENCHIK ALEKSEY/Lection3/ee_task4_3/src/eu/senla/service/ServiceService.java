@@ -8,23 +8,10 @@ import java.util.TreeMap;
 
 public class ServiceService {
 
-  /*private final ServicesDao servicesDao;
-
-  public ServiceService(ServicesDao servicesDao) {
-    this.servicesDao = servicesDao;
-  }*/
-
   public int countServiceId(int lastUsedNumber) {
     int tempServiceId;
     tempServiceId = (int) Math.pow(2, lastUsedNumber);
     return tempServiceId;
-  }
-
-  public void addService(TreeMap<Integer, Service> serviceList, String serviceName,
-      Double servicePrice, String serviceType, Boolean perDay) {
-    Service serviceToAdd = new Service(serviceName, servicePrice, serviceType, perDay);
-    serviceToAdd.setId(countServiceId(serviceList.size()));
-    serviceList.put(serviceToAdd.getId(), serviceToAdd);
   }
 
   public Service[] prepareCurrentServices(TreeMap<Integer, Service> services) {
@@ -75,22 +62,6 @@ public class ServiceService {
         .setPrice(servicePrice);
     System.out.println("Now " + serviceName + " price is " + servicePrice + "$");
   }
-
-  /*public void changeServiceAvailability(Hotel hotel, String serviceName) {
-    hotel.getServiceService().selectServiceByName(hotel, serviceName).setAvailable(
-        !hotel.getServiceService().selectServiceByName(hotel, serviceName).isAvailable());
-    if (hotel.getServiceService().selectServiceByName(hotel, serviceName).isAvailable()) {
-      System.out.println(
-          "Now service " + hotel.getServiceService().selectServiceByName(hotel, serviceName)
-              .getName()
-              + " is available");
-    } else {
-      System.out.println(
-          "Now service " + hotel.getServiceService().selectServiceByName(hotel, serviceName)
-              .getName()
-              + " is not available");
-    }
-  }*/
 
   public static class OrderedService {
 

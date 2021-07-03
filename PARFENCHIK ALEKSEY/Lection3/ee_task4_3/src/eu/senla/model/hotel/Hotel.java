@@ -35,33 +35,33 @@ public class Hotel {
 
 
   public void addingRooms() {
-    getRoomService().addRoom(getRoomsDao().getRoomsList(), 1, 2, 2, 1);
-    getRoomService().addRoom(getRoomsDao().getRoomsList(), 2, 3, 2, 2);
-    getRoomService().addRoom(getRoomsDao().getRoomsList(), 3, 4, 2, 3);
-    getRoomService().addRoom(getRoomsDao().getRoomsList(), 4, 2, 1, 4);
-    getRoomService().addRoom(getRoomsDao().getRoomsList(), 5, 1, 1, 5);
-    getRoomService().addRoom(getRoomsDao().getRoomsList(), 6, 2, 4, 6);
-    getRoomService().addRoom(getRoomsDao().getRoomsList(), 7, 3, 3, 7);
-    getRoomService().addRoom(getRoomsDao().getRoomsList(), 8, 4, 3, 8);
+    getRoomsDao().addRoom(1, 2, 2, 1);
+    getRoomsDao().addRoom(2, 3, 2, 2);
+    getRoomsDao().addRoom( 3, 4, 2, 3);
+    getRoomsDao().addRoom( 4, 2, 1, 4);
+    getRoomsDao().addRoom( 5, 1, 1, 5);
+    getRoomsDao().addRoom( 6, 2, 4, 6);
+    getRoomsDao().addRoom( 7, 3, 3, 7);
+    getRoomsDao().addRoom( 8, 4, 3, 8);
     getRoomsDao().getRoomsList().get(4).setFree(false);
   }
 
   public void addingServices() {
-    getServiceService()
-        .addService(this.getServicesDao().getServicesList(), "WiFi", 1.0, "InHouse", true);
-    getServiceService()
-        .addService(this.getServicesDao().getServicesList(), "Laundry", 3.0, "InHouse", false);
-    getServiceService()
-        .addService(this.getServicesDao().getServicesList(), "Parking", 1.5, "Outdoor", true);
-    getServiceService()
-        .addService(this.getServicesDao().getServicesList(), "CityTour", 20.0, "Outdoor", false);
-    getServiceService()
-        .addService(this.getServicesDao().getServicesList(), "Massage", 10.0, "InHouse", false);
-    getServiceService()
-        .addService(this.getServicesDao().getServicesList(), "AirportTransfer", 15.0, "Outdoor",
+    getServicesDao()
+        .addService(this.getServiceService(), "WiFi", 1.0, "InHouse", true);
+    getServicesDao()
+        .addService(this.getServiceService(), "Laundry", 3.0, "InHouse", false);
+    getServicesDao()
+        .addService(this.getServiceService(), "Parking", 1.5, "Outdoor", true);
+    getServicesDao()
+        .addService(this.getServiceService(), "CityTour", 20.0, "Outdoor", false);
+    getServicesDao()
+        .addService(this.getServiceService(), "Massage", 10.0, "InHouse", false);
+    getServicesDao()
+        .addService(this.getServiceService(), "AirportTransfer", 15.0, "Outdoor",
             false);
-    getServiceService()
-        .addService(this.getServicesDao().getServicesList(), "Gym", 2.0, "InHouse", false);
+    getServicesDao()
+        .addService(this.getServiceService(), "Gym", 2.0, "InHouse", false);
   }
 
   public void checkInGuests() {

@@ -8,11 +8,6 @@ import java.util.List;
 
 public class RoomService {
 
-  public void addRoom(List<Room> roomList, int roomNumber, int roomMaxCapacity, int roomRating,
-      double roomPrice) {
-    roomList.add(new Room(roomNumber, roomMaxCapacity, roomRating, roomPrice));
-  }
-
   public Room[] getFreeInFutureRooms(List<Room> roomList, LocalDate dateToCheck) {
     Room[] listOfFreeInFutureRooms;
     ArrayList<Room> tempListOfFreeInFutureRooms = new ArrayList<>(0);
