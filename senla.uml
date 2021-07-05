@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>eu.senla</OriginalElement>
+  <nodes>
+    <node x="230.4999999999999" y="376.0">eu.senla.api.print.PrintGuestCard</node>
+    <node x="800.9166666666665" y="670.0">eu.senla.hotel.Hotel</node>
+    <node x="948.0987157436074" y="0.0">eu.senla.service.Service</node>
+    <node x="1083.1315789473683" y="122.0">eu.senla.service.Services</node>
+    <node x="752.1542712991629" y="122.0">eu.senla.guest.Guest</node>
+    <node x="222.4999999999999" y="498.0">eu.senla.api.print.PrintInformation</node>
+    <node x="738.2499999999999" y="498.0">eu.senla.guest.HotelGuest</node>
+    <node x="935.1315789473683" y="122.0">eu.senla.room.HotelRooms</node>
+    <node x="10.499999999999886" y="376.0">eu.senla.api.print.PrintServiceDetails</node>
+    <node x="804.9166666666665" y="772.0">eu.senla.Main</node>
+    <node x="727.4999999999999" y="376.0">eu.senla.guest.RegistrationGuests</node>
+    <node x="891.6024366471736" y="274.0">eu.senla.room.Room</node>
+    <node x="410.4999999999999" y="376.0">eu.senla.api.print.PrintAllHotelGuestsByRoomNumber</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="eu.senla.Main" target="eu.senla.hotel.Hotel">
+      <point x="20.0" y="-26.0" />
+      <point x="864.9166666666665" y="747.0" />
+      <point x="866.9166666666665" y="747.0" />
+      <point x="22.0" y="26.0" />
+    </edge>
+    <edge source="eu.senla.api.print.PrintGuestCard" target="eu.senla.guest.Guest">
+      <point x="0.0" y="-26.0" />
+      <point x="310.4999999999999" y="244.0" />
+      <point x="757.6542712991629" y="244.0" />
+      <point x="-38.5" y="26.0" />
+    </edge>
+    <edge source="eu.senla.api.print.PrintInformation" target="eu.senla.api.print.PrintGuestCard">
+      <point x="19.555555555555543" y="-26.0" />
+      <point x="330.05555555555543" y="448.0" />
+      <point x="363.83333333333326" y="448.0" />
+      <point x="53.33333333333337" y="26.0" />
+    </edge>
+    <edge source="eu.senla.api.print.PrintServiceDetails" target="eu.senla.service.Service">
+      <point x="0.0" y="-26.0" />
+      <point x="110.49999999999989" y="82.0" />
+      <point x="967.5987157436074" y="82.0" />
+      <point x="-32.5" y="26.0" />
+    </edge>
+    <edge source="eu.senla.room.Room" target="eu.senla.guest.Guest">
+      <point x="-26.66666666666663" y="-26.0" />
+      <point x="904.935769980507" y="224.0" />
+      <point x="823.6542712991629" y="224.0" />
+      <point x="27.5" y="26.0" />
+    </edge>
+    <edge source="eu.senla.guest.RegistrationGuests" target="eu.senla.guest.Guest">
+      <point x="-24.0" y="-26.0" />
+      <point x="799.4999999999999" y="351.0" />
+      <point x="805.6629457631004" y="351.0" />
+      <point x="805.6629457631004" y="254.0" />
+      <point x="790.6542712991629" y="254.0" />
+      <point x="-5.5" y="26.0" />
+    </edge>
+    <edge source="eu.senla.hotel.Hotel" target="eu.senla.room.Room">
+      <point x="9.263157894736878" y="-26.0" />
+      <point x="854.1798245614034" y="580.0" />
+      <point x="929.9999999999999" y="580.0" />
+      <point x="929.9999999999999" y="351.0" />
+      <point x="921.6024366471736" y="351.0" />
+      <point x="-10.0" y="26.0" />
+    </edge>
+    <edge source="eu.senla.api.print.PrintInformation" target="eu.senla.hotel.Hotel">
+      <point x="66.0" y="26.0" />
+      <point x="376.4999999999999" y="610.0" />
+      <point x="821.7587719298244" y="610.0" />
+      <point x="-23.15789473684208" y="-26.0" />
+    </edge>
+    <edge source="eu.senla.guest.RegistrationGuests" target="eu.senla.room.Room">
+      <point x="72.0" y="-26.0" />
+      <point x="895.4999999999999" y="351.0" />
+      <point x="901.6024366471736" y="351.0" />
+      <point x="-30.0" y="26.0" />
+    </edge>
+    <edge source="eu.senla.hotel.Hotel" target="eu.senla.service.Services">
+      <point x="37.0526315789474" y="-26.0" />
+      <point x="881.9692982456139" y="640.0" />
+      <point x="1153.1315789473683" y="640.0" />
+      <point x="14.0" y="26.0" />
+    </edge>
+    <edge source="eu.senla.hotel.Hotel" target="eu.senla.guest.HotelGuest">
+      <point x="-9.263157894736878" y="-26.0" />
+      <point x="835.6535087719296" y="580.0" />
+      <point x="759.5833333333333" y="580.0" />
+      <point x="-42.66666666666663" y="26.0" />
+    </edge>
+    <edge source="eu.senla.room.Room" target="eu.senla.hotel.Hotel">
+      <point x="10.0" y="26.0" />
+      <point x="941.6024366471736" y="351.0" />
+      <point x="934.6315789473683" y="351.0" />
+      <point x="934.6315789473683" y="590.0" />
+      <point x="858.8114035087718" y="590.0" />
+      <point x="13.894736842105317" y="-26.0" />
+    </edge>
+    <edge source="eu.senla.api.print.PrintAllHotelGuestsByRoomNumber" target="eu.senla.hotel.Hotel">
+      <point x="111.0" y="26.0" />
+      <point x="669.4999999999999" y="478.0" />
+      <point x="653.6355406490081" y="478.0" />
+      <point x="653.6355406490081" y="600.0" />
+      <point x="826.3903508771928" y="600.0" />
+      <point x="-18.526315789473756" y="-26.0" />
+    </edge>
+    <edge source="eu.senla.guest.HotelGuest" target="eu.senla.guest.RegistrationGuests">
+      <point x="32.0" y="-26.0" />
+      <point x="834.2499999999999" y="478.0" />
+      <point x="823.4999999999999" y="478.0" />
+      <point x="0.0" y="26.0" />
+    </edge>
+    <edge source="eu.senla.hotel.Hotel" target="eu.senla.guest.RegistrationGuests">
+      <point x="4.631578947368439" y="-26.0" />
+      <point x="849.548245614035" y="570.0" />
+      <point x="894.4529411764704" y="570.0" />
+      <point x="894.4529411764704" y="478.0" />
+      <point x="887.4999999999999" y="478.0" />
+      <point x="64.0" y="26.0" />
+    </edge>
+    <edge source="eu.senla.room.Room" target="eu.senla.service.Service">
+      <point x="0.0" y="-26.0" />
+      <point x="931.6024366471736" y="194.0" />
+      <point x="924.6315789473683" y="194.0" />
+      <point x="924.6315789473683" y="102.0" />
+      <point x="993.5987157436074" y="102.0" />
+      <point x="-6.5" y="26.0" />
+    </edge>
+    <edge source="eu.senla.room.HotelRooms" target="eu.senla.room.Room">
+      <point x="0.0" y="26.0" />
+      <point x="999.1315789473683" y="244.0" />
+      <point x="958.2691033138403" y="244.0" />
+      <point x="26.666666666666742" y="-26.0" />
+    </edge>
+    <edge source="eu.senla.room.Room" target="eu.senla.service.Services">
+      <point x="35.55555555555566" y="-26.0" />
+      <point x="967.1579922027292" y="254.0" />
+      <point x="1097.1315789473683" y="254.0" />
+      <point x="-42.0" y="26.0" />
+    </edge>
+    <edge source="eu.senla.hotel.Hotel" target="eu.senla.api.print.PrintInformation">
+      <point x="-37.0526315789474" y="-26.0" />
+      <point x="807.8640350877191" y="640.0" />
+      <point x="244.4999999999999" y="640.0" />
+      <point x="-66.0" y="26.0" />
+    </edge>
+    <edge source="eu.senla.hotel.Hotel" target="eu.senla.room.HotelRooms">
+      <point x="27.78947368421052" y="-26.0" />
+      <point x="872.706140350877" y="620.0" />
+      <point x="1048.384520123839" y="620.0" />
+      <point x="1048.384520123839" y="244.0" />
+      <point x="1050.3315789473684" y="244.0" />
+      <point x="51.200000000000045" y="26.0" />
+    </edge>
+    <edge source="eu.senla.api.print.PrintInformation" target="eu.senla.api.print.PrintAllHotelGuestsByRoomNumber">
+      <point x="58.666666666666686" y="-26.0" />
+      <point x="369.1666666666666" y="468.0" />
+      <point x="521.4999999999999" y="468.0" />
+      <point x="-37.0" y="26.0" />
+    </edge>
+    <edge source="eu.senla.service.Services" target="eu.senla.service.Service">
+      <point x="-42.0" y="-26.0" />
+      <point x="1097.1315789473683" y="102.0" />
+      <point x="1006.5987157436074" y="102.0" />
+      <point x="6.5" y="26.0" />
+    </edge>
+    <edge source="eu.senla.api.print.PrintInformation" target="eu.senla.api.print.PrintServiceDetails">
+      <point x="-39.111111111111086" y="-26.0" />
+      <point x="271.3888888888888" y="458.0" />
+      <point x="177.16666666666652" y="458.0" />
+      <point x="66.66666666666669" y="26.0" />
+    </edge>
+    <edge source="eu.senla.room.Room" target="eu.senla.room.HotelRooms">
+      <point x="8.888888888888914" y="-26.0" />
+      <point x="940.4913255360625" y="224.0" />
+      <point x="947.9315789473683" y="224.0" />
+      <point x="-51.200000000000045" y="26.0" />
+    </edge>
+    <edge source="eu.senla.hotel.Hotel" target="eu.senla.guest.Guest">
+      <point x="-13.894736842105317" y="-26.0" />
+      <point x="831.0219298245612" y="590.0" />
+      <point x="716.9999999999999" y="590.0" />
+      <point x="716.9999999999999" y="254.0" />
+      <point x="768.6542712991629" y="254.0" />
+      <point x="-27.5" y="26.0" />
+    </edge>
+    <edge source="eu.senla.hotel.Hotel" target="eu.senla.service.Service">
+      <point x="-41.68421052631584" y="-26.0" />
+      <point x="803.2324561403507" y="650.0" />
+      <point x="0.0" y="650.0" />
+      <point x="0.0" y="72.0" />
+      <point x="954.5987157436074" y="72.0" />
+      <point x="-45.5" y="26.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="754.0" y="412.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
