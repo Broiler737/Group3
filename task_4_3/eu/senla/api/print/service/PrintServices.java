@@ -14,6 +14,7 @@ import eu.senla.utils.comparator.service.ComparatorServiceByPriceAscending;
 import eu.senla.utils.comparator.service.ComparatorServiceByPriceDescending;
 import eu.senla.utils.comparator.service.ComparatorServiceByTypeAscending;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -247,11 +248,11 @@ public class PrintServices {
   }
 
   public void printServicesByNameAscending(ServiceService serviceService,
-      TreeMap<Integer, Service> servicesList) {
+      HashMap<Integer, Service> servicesList) {
     serviceService
-        .prepareCurrentServices(servicesList);
+        .prepareCurrentServices();
     Service[] tempServiceArray = serviceService
-        .prepareCurrentServices(servicesList);
+        .prepareCurrentServices();
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByNameAscending());
     for (Service sortedService : tempServiceArray) {
@@ -260,11 +261,11 @@ public class PrintServices {
   }
 
   public void printServicesByNameDescending(ServiceService serviceService,
-      TreeMap<Integer, Service> servicesList) {
+      HashMap<Integer, Service> servicesList) {
     serviceService
-        .prepareCurrentServices(servicesList);
+        .prepareCurrentServices();
     Service[] tempServiceArray = serviceService
-        .prepareCurrentServices(servicesList);
+        .prepareCurrentServices();
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByNameAscending());
     ;
@@ -274,9 +275,9 @@ public class PrintServices {
   }
 
   public void printServicesByPriceAscending(ServiceService serviceService,
-      TreeMap<Integer, Service> servicesList) {
+      HashMap<Integer, Service> servicesList) {
     Service[] tempServiceArray = serviceService
-        .prepareCurrentServices(servicesList);
+        .prepareCurrentServices();
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByPriceAscending());
     for (Service sortedService : tempServiceArray) {
@@ -285,9 +286,9 @@ public class PrintServices {
   }
 
   public void printServicesByPriceDescending(ServiceService serviceService,
-      TreeMap<Integer, Service> servicesList) {
+      HashMap<Integer, Service> servicesList) {
     Service[] tempServiceArray = serviceService
-        .prepareCurrentServices(servicesList);
+        .prepareCurrentServices();
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByPriceDescending());
     for (Service sortedService : tempServiceArray) {
@@ -297,9 +298,9 @@ public class PrintServices {
   }
 
   public void printServicesByTypeAscending(ServiceService serviceService,
-      TreeMap<Integer, Service> servicesList) {
+      HashMap<Integer, Service> servicesList) {
     Service[] tempServiceArray = serviceService
-        .prepareCurrentServices(servicesList);
+        .prepareCurrentServices();
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByTypeAscending());
     for (Service sortedService : tempServiceArray) {
@@ -309,9 +310,9 @@ public class PrintServices {
   }
 
   public void printServicesByTypeDescending(ServiceService serviceService,
-      TreeMap<Integer, Service> servicesList) {
+      HashMap<Integer, Service> servicesList) {
     Service[] tempServiceArray = serviceService
-        .prepareCurrentServices(servicesList);
+        .prepareCurrentServices();
     Service[] tempServiceReverseArray = new Service[tempServiceArray.length];
     Arrays.sort(tempServiceArray, 0, tempServiceArray.length,
         new ComparatorServiceByTypeAscending());

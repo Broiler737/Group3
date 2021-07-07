@@ -11,6 +11,7 @@ import eu.senla.service.GuestService;
 import eu.senla.service.RoomService;
 import eu.senla.service.ServiceService;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -27,7 +28,7 @@ public class PrintInformation {
   public void printInformation(RoomService roomService, List<Room> roomList,
       GuestService guestService, List<Guest> guestList,
       ServiceService serviceService,
-      TreeMap<Integer, Service> servicesList) {
+      HashMap<Integer, Service> servicesList) {
     //Simple test of work classes and methods
     System.out.println("Print results of check-out guests");
     printGuests.printAllHotelGuestsByRoomNumber(this, roomList, roomService, guestService);

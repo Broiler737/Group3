@@ -2,40 +2,38 @@ package eu.senla.service;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+import eu.senla.dao.ServiceDao;
 import eu.senla.model.service.Service;
 import java.time.LocalDate;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 public class ServiceService {
-
-
-
-  public int countServiceId(int lastUsedNumber) {
-    int tempServiceId;
-    tempServiceId = (int) Math.pow(2, lastUsedNumber);
-    return tempServiceId;
+  ServiceDao serviceDao;
+  public ServiceService(ServiceDao serviceDao) {
+    this.serviceDao=serviceDao;
   }
 
-  public Service[] prepareCurrentServices(TreeMap<Integer, Service> services) {
-    Service[] tempServiceArray = new Service[services.size()];
-    for (int i = 0; i < services.size(); i++) {
-      tempServiceArray[i] = services.get(countServiceId(i));
-    }
+  public Service[] prepareCurrentServices() {
+    Service[] tempServiceArray = new Service[serviceDao.getServicesList().size()];
+    tempServiceArray = serviceDao.getServicesList().values().toArray(new Service[]{});
+   /* for (int i = 0; i < tempServiceArray.length; i++) {
+      tempServiceArray[i] = serviceDao.getServicesList().values().toArray().get(i);
+    }*/
     return tempServiceArray;
   }
 
-  public Service selectServiceByCounter(TreeMap<Integer, Service> serviceList, int serviceCounter) {
+  public Service selectServiceByCounter(int serviceCounter) {
     Service tempService = null;
-    if (serviceList.containsKey(countServiceId(serviceCounter))) {
-      tempService = serviceList.get(countServiceId(serviceCounter));
+    if (serviceDao.getServicesList().containsKey(serviceCounter)) {
+      tempService = serviceDao.getServicesList().get(serviceCounter);
     }
     return tempService;
   }
 
-  public Service selectAvailableServiceByName(TreeMap<Integer, Service> serviceList,
+  public Service selectAvailableServiceByName(HashMap<Integer, Service> serviceList,
       String serviceName) {
     Service tempService = null;
-    Service[] tempServiceArray = prepareCurrentServices(serviceList);
+    Service[] tempServiceArray = prepareCurrentServices();
     for (Service service : tempServiceArray) {
       if (service.getName().toLowerCase().equals(serviceName.toLowerCase()) /*&& service
           .isAvailable()*/) {
@@ -46,9 +44,9 @@ public class ServiceService {
     return tempService;
   }
 
-  public Service selectServiceByName(TreeMap<Integer, Service> serviceList, String serviceName) {
+  public Service selectServiceByName(HashMap<Integer, Service> serviceList, String serviceName) {
     Service tempService = null;
-    Service[] tempServiceArray = prepareCurrentServices(serviceList);
+    Service[] tempServiceArray = prepareCurrentServices();
     for (Service service : tempServiceArray) {
       if (service.getName().toLowerCase().equals(serviceName.toLowerCase())) {
         tempService = service;
@@ -58,7 +56,7 @@ public class ServiceService {
     return tempService;
   }
 
-  public void changeServicePrice(TreeMap<Integer, Service> serviceList,
+  public void changeServicePrice(HashMap<Integer, Service> serviceList,
       ServiceService serviceService, String serviceName, Double servicePrice) {
     serviceService.selectServiceByName(serviceList, serviceName)
         .setPrice(servicePrice);
@@ -73,7 +71,7 @@ public class ServiceService {
     int durationOfUseService;
     int countOfOrderingService;
 
-    public OrderedService(TreeMap<Integer, Service> serviceList, ServiceService serviceService,
+    public OrderedService(HashMap<Integer, Service> serviceList, ServiceService serviceService,
         String serviceName, LocalDate dateOfOrderingService, LocalDate dateOfEndingUseService) {
 
       Service tempService = serviceService.selectAvailableServiceByName(serviceList, serviceName);
@@ -90,9 +88,9 @@ public class ServiceService {
       }
     }
 
-    public OrderedService(TreeMap<Integer, Service> serviceList, ServiceService serviceService,
+    public OrderedService(HashMap<Integer, Service> serviceList, ServiceService serviceService,
         int serviceNumber, LocalDate dateOfOrderingService, LocalDate dateOfEndingUseService) {
-      this.orderedService = serviceService.selectServiceByCounter(serviceList, serviceNumber);
+      this.orderedService = serviceService.selectServiceByCounter(serviceNumber);
       this.dateOfOrderingService = dateOfOrderingService;
       this.dateOfEndingUseService = dateOfEndingUseService;
       this.durationOfUseService = (int) DAYS.between(dateOfOrderingService, dateOfEndingUseService);

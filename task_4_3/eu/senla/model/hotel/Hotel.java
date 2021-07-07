@@ -17,9 +17,9 @@ public class Hotel {
   public final RoomDao roomDao = new RoomDao();
   public final ServiceDao serviceDao = new ServiceDao();
   public final GuestDao guestDao = new GuestDao();
-  private final ServiceService serviceService = new ServiceService();
+  private final ServiceService serviceService = new ServiceService(serviceDao);
   private final RoomService roomService = new RoomService();
-  private final GuestService guestService = new GuestService();
+  private final GuestService guestService = new GuestService(guestDao);
   public final PrintInformation printInformation = new PrintInformation();
 
 
@@ -170,7 +170,7 @@ public class Hotel {
         .addingServiceByNumberToGuest(this.getServiceDao().getServicesList(),
             this.getServiceService(),
             getGuestService().selectGuestByName(this.getRoomDao().getRoomsList(), "Tom"),
-            3);
+            4);
     getGuestService().addingServiceByNameToGuest(this.getServiceDao().getServicesList(),
         this.getServiceService(),
         getGuestService().selectGuestByName(this.getRoomDao().getRoomsList(), "Dilan"), "Parking");

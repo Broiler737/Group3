@@ -1,5 +1,8 @@
 package eu.senla.service;
 
+import com.sun.xml.internal.org.jvnet.fastinfoset.stax.LowLevelFastInfosetStreamWriter;
+import eu.senla.dao.GuestDao;
+import eu.senla.dao.ServiceDao;
 import eu.senla.model.guest.Guest;
 import eu.senla.model.room.Room;
 import eu.senla.model.service.Service;
@@ -7,12 +10,16 @@ import eu.senla.service.ServiceService.OrderedService;
 import eu.senla.utils.userinput.ProcessingUserInput;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class GuestService {
+  GuestDao guestDao;
 
-  public GuestService() {
+  public GuestService(GuestDao guestDao) {
+    this.guestDao=guestDao;
   }
 
   public int getCountOfRegisteredGuests(List<Room> roomList) {
@@ -59,7 +66,7 @@ public class GuestService {
     return tempDebt;
   }
 
-  public void addingServiceByNameToGuest(TreeMap<Integer, Service> serviceList,
+  public void addingServiceByNameToGuest(HashMap<Integer, Service> serviceList,
       ServiceService serviceService, Guest guest, String serviceNameToAdd) {
     if (guest.getOrderedServices().size() > 0) {
       boolean isServiceAdded = false;
@@ -85,16 +92,16 @@ public class GuestService {
       } else {
         guest.getOrderedServices()
             .add(new OrderedService(serviceList, serviceService, serviceNameToAdd,
-                LocalDate.of(2021, 6, 10), LocalDate.of(2021, 6, 12)));
+                LocalDate.of(2021, 7, 10), LocalDate.of(2021, 7, 12)));
       }
     } else {
       guest.getOrderedServices()
           .add(new OrderedService(serviceList, serviceService, serviceNameToAdd,
-              LocalDate.of(2021, 6, 10), LocalDate.of(2021, 6, 12)));
+              LocalDate.of(2021, 7, 10), LocalDate.of(2021, 7, 12)));
     }
   }
 
-  public void addingServiceByNumberToGuest(TreeMap<Integer, Service> serviceList,
+  public void addingServiceByNumberToGuest(HashMap<Integer, Service> serviceList,
       ServiceService serviceService, Guest guest, int serviceNumberToAdd) {
     if (guest.getOrderedServices().size() > 0) {
       for (int i = 0; i < guest.getOrderedServices().size(); i++) {
@@ -156,8 +163,13 @@ public class GuestService {
       System.out.println("Room " + room.getNumber() + "is full");
     }
   }
-  public Guest[] makeGuestsList(ProcessingUserInput processingUserInput, int countOfGuests) {
-    Guest[] tempGuestArray = new Guest[countOfGuests];
+ /* public Guest[] makeGuestsList(Set<E,T> set<String,String>) {
+    Object o;
+    o.
+    Guest[] tempGuestArray = new Guest[set.size()];
+    for (int i = 0; i < set.size(); i++) {
+      tempGuestArray[i]=new Guest(set.iterator().next());
+    }
     String guestName = null;
     boolean isRight = false;
     for (int i = 0; i < tempGuestArray.length; i++) {
@@ -173,7 +185,7 @@ public class GuestService {
           guestDurationOfStay);
     }
     return tempGuestArray;
-  }
+  }*/
   public Guest[] prepareToCheckIn(ProcessingUserInput processingUserInput, int countOfGuests) {
     Guest[] tempGuestArray = new Guest[countOfGuests];
     String guestName = null;

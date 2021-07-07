@@ -2,21 +2,34 @@ package eu.senla.dao;
 
 import eu.senla.model.service.Service;
 import eu.senla.service.ServiceService;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 public class ServiceDao {
 
-  final TreeMap<Integer, Service> servicesList = new TreeMap() {
+  final HashMap<Integer, Service> servicesList = new HashMap() {
   };
 
-  public TreeMap<Integer, Service> getServicesList() {
+
+  public HashMap<Integer, Service> getServicesList() {
     return servicesList;
   }
 
   public void addService(ServiceService serviceService, String serviceName,
       Double servicePrice, String serviceType, Boolean perDay) {
-    Service serviceToAdd = new Service(serviceName, servicePrice, serviceType, perDay);
-    serviceToAdd.setId(serviceService.countServiceId(getServicesList().size()));
+       Service serviceToAdd = new Service(serviceName, servicePrice, serviceType, perDay);
+    serviceToAdd.setId(countServiceId());
     getServicesList().put(serviceToAdd.getId(), serviceToAdd);
+  }
+  public int countServiceId( ) {
+    int tempServiceId;
+    tempServiceId = (int) Math.pow(2, getServicesList().size());
+    return tempServiceId;
+  }
+  public static class s {
+
+    public s() {
+    }
+
+
   }
 }
